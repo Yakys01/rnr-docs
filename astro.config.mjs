@@ -12,7 +12,12 @@ export default defineConfig({
   image: { service: passthroughImageService() },
   integrations: [
     starlight({
-      title: "runrunapi Docs",
+      title: "RunRunApi",
+      logo: {
+        light: './public/logo-light.svg',
+        dark: './public/logo-dark.svg',
+        alt: 'RunRunApi',
+      },
       customCss: ["./src/styles/global.css"],
       sidebar: [
         { label: "Introducción", link: "/docs/" },
@@ -20,16 +25,36 @@ export default defineConfig({
         {
           label: "Para chats humanos",
           items: [
-            { label: "ChatGPT", link: "/chats-humanos/chatgpt/" },
-            { label: "Claude", link: "/chats-humanos/claude/" },
-            { label: "Jania", link: "/chats-humanos/jania/" },
+            {
+              label: "ChatGPT",
+              link: "/chats-humanos/chatgpt/",
+              attrs: { "data-icon": "openai" },
+            },
+            {
+              label: "Claude",
+              link: "/chats-humanos/claude/",
+              attrs: { "data-icon": "claude" },
+            },
+            {
+              label: "Jania",
+              link: "/chats-humanos/jania/",
+              attrs: { "data-icon": "jan-ia" },
+            },
           ],
         },
         {
           label: "Para agentes IA",
           items: [
-            { label: "Claude Code", link: "/agentes-ia/claude-code/" },
-            { label: "Codex", link: "/agentes-ia/codex/" },
+            {
+              label: "Claude Code",
+              link: "/agentes-ia/claude-code/",
+              attrs: { "data-icon": "claudecode" },
+            },
+            {
+              label: "Codex",
+              link: "/agentes-ia/codex/",
+              attrs: { "data-icon": "codex" },
+            },
             { label: "Otros proveedores", link: "/agentes-ia/otros-proveedores/" },
           ],
         },
@@ -41,17 +66,16 @@ export default defineConfig({
             { label: "Obtener convocatorias", link: "/mcp/obtener-convocatorias/" },
           ],
         },
-        { label: "APIs REST", link: "/reference/" },
+        { label: "Apis Referencia", link: "/reference/" },
         { label: "Soporte", link: "/soporte/" },
       ],
       plugins: [
         lucode({
           navLinks: [
-            { label: "Docs", link: "/docs/" },
-            { label: "Referencia", link: "/reference/" },
-            { label: "Plataforma", link: ENV.APPWEB_URL },
+            { label: "Docs", link: "/docs/", attrs: { "data-icon": "docs" } },
+            { label: "Api Referencia", link: "/reference/", attrs: { "data-icon": "api" } },
+            { label: "Plataforma", link: ENV.APPWEB_URL, attrs: { "data-icon": "plataforma" } },
           ],
-          footerText: "Built with [Astro](https://astro.build) and [Lucode Starlight](https://lucas-labs.github.io/lucode-starlight-theme/).",
         }),
       ],
     }),

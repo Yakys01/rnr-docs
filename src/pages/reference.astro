@@ -11,6 +11,9 @@ const apiServer = ENV.APPAPI_URL;
   frontmatter={{
     title: "",
     template: "splash",
+    // La referencia no navega como un doc: sin botones prev/next.
+    prev: false,
+    next: false,
   }}
   hasSidebar={false}
 >
@@ -20,6 +23,18 @@ const apiServer = ENV.APPAPI_URL;
       sources: [{ url: "/openapi.json", agent: { disabled: true } }],
       servers: apiServer ? [{ url: apiServer }] : undefined,
       hideDarkModeToggle: true,
+      theme: "saturn", 
+      layout: "classic", 
+      defaultOpenAllTags: true,
+      searchHotKey: 'l'
     }}
   />
 </StarlightPage>
+
+<style is:global>
+  /* Solo la referencia Scalar: fuera la franja de título y el footer del tema. */
+  [data-slot='doc-title'],
+  [data-slot='layout'] > footer {
+    display: none;
+  }
+</style>

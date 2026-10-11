@@ -27,3 +27,152 @@ html[data-theme] .scalar-app {
 html[data-theme='dark'] .scalar-app {
   color-scheme: dark;
 }
+
+/* Logo más grande que el tope de 32px del SiteTitle de lucode. */
+.site-title .logo {
+  max-height: 48px;
+  max-width: 48px;
+}
+
+/* Wordmark del lockup (copiado de apps/web LogoLockup.astro): Saira Stencil.
+ * El tope de lucode pone font-weight:700 sobre un unico archivo 400 → faux
+ * bold, igual que el `font-saira font-bold` de la app. */
+@font-face {
+  font-family: "Saira Stencil";
+  src: url("../assets/fonts/saira-stencil-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+.site-title .title-text {
+  font-family: "Saira Stencil", sans-serif;
+}
+
+/* Nav del header: más aire respecto al logo y un icono por enlace.
+ * Los iconos son copias de los BuiltInIcons de Starlight en /svgs/nav,
+ * enmascarados para heredar el color del texto (incluido hover y tema oscuro).
+ * Cada enlace marca su icono con `data-icon` desde `navLinks` en astro.config.mjs. */
+.site-title-wrapper .site-title {
+  margin-right: calc(var(--spacing) * 6);
+}
+
+.nav-bar a[data-icon] {
+  gap: calc(var(--spacing) * 1.5);
+}
+
+.nav-bar a[data-icon]::before {
+  content: "";
+  flex: none;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--nav-icon) center / contain no-repeat;
+  mask: var(--nav-icon) center / contain no-repeat;
+}
+
+.nav-bar a[data-icon="docs"] {
+  --nav-icon: url("/svgs/nav/docs.svg");
+}
+
+.nav-bar a[data-icon="api"] {
+  --nav-icon: url("/svgs/nav/api.svg");
+}
+
+.nav-bar a[data-icon="plataforma"] {
+  --nav-icon: url("/svgs/nav/plataforma.svg");
+}
+
+/* Los items del sidebar (desktop y drawer móvil) van indentados 1rem respecto
+ * a los títulos de grupo, que se quedan a la izquierda. */
+.entry-link,
+.links-docs a {
+  margin-left: 1rem;
+}
+
+/* Iconos de marca del sidebar (desktop y drawer móvil): mismo patrón que el
+ * nav del header, pero a color. Cada enlace marca su icono con `data-icon`
+ * (attrs) en astro.config.mjs; lo pintan tanto el SidebarSublist de lucode
+ * (`.entry-link`) como los enlaces del drawer móvil (`.links-docs`). */
+.entry-link[data-icon]::before,
+.links-docs a[data-icon]::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  background: var(--entry-icon) center / contain no-repeat;
+}
+
+.entry-link[data-icon]::before {
+  flex: none;
+  margin-left: calc(var(--spacing) * 2);
+}
+
+.links-docs a[data-icon]::before {
+  display: inline-block;
+  margin-right: calc(var(--spacing) * 1.5);
+  vertical-align: middle;
+}
+
+[data-icon="openai"] {
+  --entry-icon: url("/svgs/desktop/openai.svg");
+}
+
+[data-icon="claude"] {
+  --entry-icon: url("/svgs/desktop/claude.svg");
+}
+
+[data-icon="jan-ia"] {
+  --entry-icon: url("/svgs/desktop/jan-ia.svg");
+}
+
+[data-icon="claudecode"] {
+  --entry-icon: url("/svgs/agents/claudecode.svg");
+}
+
+[data-icon="codex"] {
+  --entry-icon: url("/svgs/agents/codex.svg");
+}
+
+/* openai.svg usa `currentColor`: como background-image se resuelve a negro fijo
+ * (invisible en tema oscuro). El shorthand limpia el background-image y la
+ * máscara deja ver el color del texto. Igual para ollama/opencode a futuro. */
+.entry-link[data-icon="openai"]::before,
+.links-docs a[data-icon="openai"]::before {
+  background: currentColor;
+  -webkit-mask: var(--entry-icon) center / contain no-repeat;
+  mask: var(--entry-icon) center / contain no-repeat;
+}
+
+/* Tarjetas enlazadas del home: el Card de Starlight no acepta `href`, así que
+ * cada Card va envuelta en <a class="card-link">. Como todas quedan como
+ * primer hijo del grid, replicamos la rotación de colores por :nth-child que
+ * Card aplica a los iconos. Sin @layer, así que gana al CSS de Starlight. */
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+}
+
+.card-link .card {
+  height: 100%;
+}
+
+.card-link:nth-child(1) .card {
+  --sl-card-border: var(--sl-color-orange);
+  --sl-card-bg: var(--sl-color-orange-low);
+}
+
+.card-link:nth-child(2) .card {
+  --sl-card-border: var(--sl-color-purple);
+  --sl-card-bg: var(--sl-color-purple-low);
+}
+
+.card-link:nth-child(3) .card {
+  --sl-card-border: var(--sl-color-green);
+  --sl-card-bg: var(--sl-color-green-low);
+}
+
+.card-link:nth-child(4) .card {
+  --sl-card-border: var(--sl-color-red);
+  --sl-card-bg: var(--sl-color-red-low);
+}

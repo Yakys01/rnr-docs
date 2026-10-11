@@ -1,6 +1,6 @@
 ---
-title: runrunapi Docs
-description: Documentación de runrunapi — monorepo fullstack en TypeScript con Hono, oRPC, Drizzle y Cloudflare Workers.
+title: RunRunApi Docs
+description: Tu guia de implementacion de nuestras herramientas 
 template: splash
 hero:
   layout: split-left
@@ -8,15 +8,11 @@ hero:
     text: Nuevo sitio de documentación
     link: /docs/
   image:
-    file: ../../assets/hero.svg
-    alt: Consola de la API runrunapi con una petición POST /rpc/wallet/debit y su respuesta JSON.
+    html: '<img src="/banner.svg" width="450" alt="Ilustración de bienvenida a runrunapi">'
   actions:
     - text: Comenzar
       link: /docs/
       icon: right-arrow
-    - text: Ver API
-      link: /reference/
-      variant: secondary
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
@@ -25,15 +21,26 @@ import { ContainerSection } from "lucode-starlight/components";
 <ContainerSection>
 
 <CardGrid>
-  <Card title="Guías" icon="compass">
-    Recorridos paso a paso por el stack, la estructura del proyecto y el flujo de desarrollo.
-  </Card>
-  <Card title="Paquetes" icon="boxes">
-    Referencia de los paquetes compartidos: api, auth, db, env, config e infra.
-  </Card>
-  <Card title="Deploy" icon="rocket">
-    Cómo se despliega el monorepo a Cloudflare con Alchemy.
-  </Card>
+  <a class="card-link" href="/empezamos/">
+    <Card title="Empezamos" icon="rocket">
+      Crea tu credencial o conecta con nuestro MCP: autenticación, modulos y mas.
+    </Card>
+  </a>
+  <a class="card-link" href="/agentes-ia/claude-code/">
+    <Card title="Integración con Agentes" icon="puzzle">
+      Guías de integracion de nuestro mcp para Claude Code, Codex y otros proveedores.
+    </Card>
+  </a>
+  <a class="card-link" href="/mcp/obtener-usuarios/">
+    <Card title="Referencia MCP" icon="server">
+      Documentacion de nuestras herramientas MCP: usuarios, compañías y convocatorias.
+    </Card>
+  </a>
+  <a class="card-link" href="/reference/">
+    <Card title="Referencia APIs" icon="document">
+      Todos los endpoints para desarrolladores e integraciones personalizadas en la referencia interactiva.
+    </Card>
+  </a>
 </CardGrid>
 
 </ContainerSection>
