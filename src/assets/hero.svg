@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img">
+    <defs>
+        <radialGradient id="glow" cx="82%" cy="4%" r="62%">
+            <stop offset="0" stop-color="#3b82f6" stop-opacity="0.16" />
+            <stop offset="0.55" stop-color="#3b82f6" stop-opacity="0.05" />
+            <stop offset="1" stop-color="#3b82f6" stop-opacity="0" />
+        </radialGradient>
+    </defs>
+
+    <rect width="1200" height="900" fill="#0a0a0b" />
+    <rect width="1200" height="900" fill="url(#glow)" />
+    <rect x="1" y="1" width="1198" height="898" fill="none" stroke="#27272a" stroke-width="2" />
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace">
+        <!-- Title bar -->
+        <circle cx="48" cy="42" r="7" fill="#3f3f46" />
+        <circle cx="76" cy="42" r="7" fill="#3f3f46" />
+        <circle cx="104" cy="42" r="7" fill="#3f3f46" />
+        <text x="140" y="50" font-size="22" fill="#71717a">api.apiapi.com</text>
+        <text x="1136" y="50" font-size="20" fill="#3f3f46" text-anchor="end">runrunapi docs</text>
+        <line x1="0" y1="84" x2="1200" y2="84" stroke="#1c1c1f" stroke-width="2" />
+
+        <!-- Request line -->
+        <rect x="64" y="136" width="100" height="48" rx="12" fill="#7dd3fc" fill-opacity="0.12" stroke="#7dd3fc" stroke-opacity="0.3" stroke-width="1.5" />
+        <text x="114" y="170" font-size="24" font-weight="700" fill="#7dd3fc" text-anchor="middle" letter-spacing="1">POST</text>
+        <text x="188" y="170" font-size="28" fill="#f4f4f5">/rpc/wallet/debit</text>
+        <rect x="944" y="136" width="112" height="48" rx="12" fill="#86efac" fill-opacity="0.12" stroke="#86efac" stroke-opacity="0.3" stroke-width="1.5" />
+        <text x="1000" y="170" font-size="22" fill="#86efac" text-anchor="middle">200 OK</text>
+        <text x="1136" y="170" font-size="22" fill="#71717a" text-anchor="end">42 ms</text>
+
+        <!-- Request body -->
+        <rect x="64" y="216" width="1072" height="222" rx="18" fill="#111114" stroke="#1f1f24" stroke-width="2" />
+        <text x="96" y="254" font-size="20" fill="#52525b">request.json</text>
+        <text x="96" y="304" font-size="26" fill="#a1a1aa">{</text>
+        <text x="122" y="344" font-size="26" fill="#a1a1aa"><tspan fill="#7dd3fc">"userId"</tspan><tspan>:&#160;</tspan><tspan fill="#86efac">"12345678"</tspan><tspan>,</tspan></text>
+        <text x="122" y="384" font-size="26" fill="#a1a1aa"><tspan fill="#7dd3fc">"amount"</tspan><tspan>:&#160;</tspan><tspan fill="#fbbf24">25</tspan></text>
+        <text x="96" y="424" font-size="26" fill="#a1a1aa">}</text>
+
+        <!-- Flow arrow -->
+        <line x1="600" y1="456" x2="600" y2="488" stroke="#3f3f46" stroke-width="3" stroke-linecap="round" />
+        <path d="M588 476 L600 488 L612 476" fill="none" stroke="#3f3f46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Response body -->
+        <rect x="64" y="500" width="1072" height="270" rx="18" fill="#111114" stroke="#1f1f24" stroke-width="2" />
+        <text x="96" y="538" font-size="20" fill="#52525b">response.json</text>
+        <text x="96" y="588" font-size="26" fill="#a1a1aa">{</text>
+        <text x="122" y="628" font-size="26" fill="#a1a1aa"><tspan fill="#7dd3fc">"ok"</tspan><tspan>:&#160;</tspan><tspan fill="#fbbf24">true</tspan><tspan>,</tspan></text>
+        <text x="122" y="668" font-size="26" fill="#a1a1aa"><tspan fill="#7dd3fc">"balance"</tspan><tspan>:&#160;</tspan><tspan fill="#fbbf24">175</tspan><tspan>,</tspan></text>
+        <text x="122" y="708" font-size="26" fill="#a1a1aa"><tspan fill="#7dd3fc">"currency"</tspan><tspan>:&#160;</tspan><tspan fill="#86efac">"PEN"</tspan></text>
+        <text x="96" y="748" font-size="26" fill="#a1a1aa">}</text>
+
+        <!-- Stack badges -->
+        <g font-size="22" fill="#a1a1aa">
+            <rect x="64" y="800" width="126" height="56" rx="14" fill="#18181b" stroke="#27272a" stroke-width="2" />
+            <text x="127" y="836" text-anchor="middle">Hono</text>
+            <rect x="210" y="800" width="136" height="56" rx="14" fill="#18181b" stroke="#27272a" stroke-width="2" />
+            <text x="278" y="836" text-anchor="middle">oRPC</text>
+            <rect x="366" y="800" width="170" height="56" rx="14" fill="#18181b" stroke="#27272a" stroke-width="2" />
+            <text x="451" y="836" text-anchor="middle">Drizzle</text>
+            <rect x="556" y="800" width="304" height="56" rx="14" fill="#18181b" stroke="#27272a" stroke-width="2" />
+            <text x="708" y="836" text-anchor="middle">Cloudflare Workers</text>
+            <rect x="880" y="800" width="94" height="56" rx="14" fill="#18181b" stroke="#27272a" stroke-width="2" />
+            <text x="927" y="836" text-anchor="middle">D1</text>
+        </g>
+    </g>
+</svg>

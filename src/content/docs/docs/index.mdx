@@ -1,0 +1,52 @@
+---
+title: Introducción
+description: Presentación de rnr-api — qué expone, para quién es y por qué usarlo.
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+rnr-api es un servidor Bun + Elysia que expone información de personas, empresas y contratación pública del Perú (derivada de SUNAT y OSCE) a través de dos interfaces:
+
+- **REST** (`/session`, `/user/*`, `/company/*`, `/contract/*`, …), protegida con API keys de sesión.
+- **MCP** (`/mcp`), un servidor Model Context Protocol abierto a cualquier cliente compatible: chats humanos (ChatGPT, Claude), agentes de código (Claude Code, Codex) y otros clientes IA.
+
+<CardGrid>
+  <Card title="Dos interfaces, un mismo núcleo" icon="layers">
+    La misma información por HTTP REST o por MCP, servida por los mismos controladores.
+  </Card>
+  <Card title="Hecho para IA" icon="bot">
+    16 herramientas MCP listas para chats humanos y agentes de código, sin código propio.
+  </Card>
+  <Card title="Consulta segura" icon="shield-check">
+    Herramientas de lectura pura; solo `collect_user_info` dispara recolección y persiste cambios.
+  </Card>
+  <Card title="Datos del Perú" icon="map-pin">
+    Personas, empresas y contratación pública: SUNAT y OSCE en un solo lugar.
+  </Card>
+</CardGrid>
+
+## Qué puedes consultar
+
+- **Personas**: ficha por número de documento (DNI), con recolección bajo demanda para refrescar datos desactualizados.
+- **Empresas**: ficha SUNAT (razón social, estado y condición, dirección con ubigeo), historial anual, contratos, adjudicaciones, convocatorias, postulaciones y pronunciamientos.
+- **Rankings**: empresas con deuda coactiva SUNAT y empresas con más penalidades (PAC/OSCE).
+- **Contratos y convocatorias**: detalle completo de un proceso o contrato por código OSCE.
+- **Ubicaciones**: departamento, provincia y distrito a partir de un código ubigeo.
+
+## El servidor MCP
+
+El servidor MCP se llama **rnr-api** (versión 1.0.0) y registra **16 herramientas** sobre los mismos controladores que la REST. Todas las herramientas son de consulta; solo `collect_user_info` dispara recolección externa y persiste cambios.
+
+| Grupo | Herramientas |
+|---|---|
+| Usuarios | `get_user_info`, `collect_user_info` |
+| Empresas | `get_company_info`, `get_company_status`, `get_company_track`, `get_company_contracts`, `get_company_directs`, `get_company_adjudications`, `get_company_convocatories`, `get_company_bidders`, `get_company_pronouncements`, `search_companies`, `get_companies_with_debt`, `get_companies_with_penalties` |
+| Contratos / Convocatorias | `get_convocatory`, `get_contract` |
+| Ubicaciones | `get_location` |
+
+## Por dónde empezar
+
+- Si vas a consultarlo desde un chat humano, empieza por [ChatGPT](/chats-humanos/chatgpt/) o [Claude](/chats-humanos/claude/).
+- Si trabajas con agentes de código, ve a [Claude Code](/agentes-ia/claude-code/) o [Codex](/agentes-ia/codex/).
+- Para el detalle herramienta por herramienta (entradas, salidas y ejemplos), revisa la [MCP Referencia](/mcp/obtener-usuarios/).
+- Si prefieres HTTP directo, la [referencia REST](/reference/) documenta y permite probar cada ruta.

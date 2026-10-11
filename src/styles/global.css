@@ -1,0 +1,29 @@
+/*
+ * Scalar sigue el tema de Starlight.
+ *
+ * Scalar no lee `data-theme`, así que mapeamos sus variables a los tokens de
+ * Starlight. La escala de grises de lucode ya se invierte en dark, por eso un
+ * solo mapa cubre ambos modos. El CSS de Scalar vive en `@layer`, así que este
+ * (sin capa) y con más especificidad siempre gana.
+ */
+html[data-theme] .scalar-app {
+  --scalar-color-1: var(--sl-color-text);
+  --scalar-color-2: var(--sl-color-gray-2);
+  --scalar-color-3: var(--sl-color-gray-3);
+  --scalar-color-accent: var(--sl-color-text-accent);
+  --scalar-background-1: var(--sl-color-bg);
+  --scalar-background-2: var(--sl-color-gray-7);
+  --scalar-background-3: var(--sl-color-gray-6);
+  --scalar-background-accent: var(--sl-color-accent-low);
+  --scalar-border-color: var(--sl-color-gray-6);
+  --scalar-color-green: var(--sl-color-green);
+  --scalar-color-red: var(--sl-color-red);
+  --scalar-color-orange: var(--sl-color-orange);
+  --scalar-color-blue: var(--sl-color-blue);
+  --scalar-color-purple: var(--sl-color-purple);
+  color-scheme: light;
+}
+
+html[data-theme='dark'] .scalar-app {
+  color-scheme: dark;
+}

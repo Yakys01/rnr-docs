@@ -1,0 +1,39 @@
+---
+title: runrunapi Docs
+description: Documentación de runrunapi — monorepo fullstack en TypeScript con Hono, oRPC, Drizzle y Cloudflare Workers.
+template: splash
+hero:
+  layout: split-left
+  announcement:
+    text: Nuevo sitio de documentación
+    link: /docs/
+  image:
+    file: ../../assets/hero.svg
+    alt: Consola de la API runrunapi con una petición POST /rpc/wallet/debit y su respuesta JSON.
+  actions:
+    - text: Comenzar
+      link: /docs/
+      icon: right-arrow
+    - text: Ver API
+      link: /reference/
+      variant: secondary
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import { ContainerSection } from "lucode-starlight/components";
+
+<ContainerSection>
+
+<CardGrid>
+  <Card title="Guías" icon="compass">
+    Recorridos paso a paso por el stack, la estructura del proyecto y el flujo de desarrollo.
+  </Card>
+  <Card title="Paquetes" icon="boxes">
+    Referencia de los paquetes compartidos: api, auth, db, env, config e infra.
+  </Card>
+  <Card title="Deploy" icon="rocket">
+    Cómo se despliega el monorepo a Cloudflare con Alchemy.
+  </Card>
+</CardGrid>
+
+</ContainerSection>

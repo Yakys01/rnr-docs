@@ -1,0 +1,25 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { ScalarComponent } from "@scalar/astro";
+
+import { ENV } from "../constants";
+
+const apiServer = ENV.APPAPI_URL;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "",
+    template: "splash",
+  }}
+  hasSidebar={false}
+>
+  <ScalarComponent
+    renderMode="client"
+    configuration={{
+      sources: [{ url: "/openapi.json", agent: { disabled: true } }],
+      servers: apiServer ? [{ url: apiServer }] : undefined,
+      hideDarkModeToggle: true,
+    }}
+  />
+</StarlightPage>
