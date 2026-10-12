@@ -50,6 +50,6 @@ Herramientas del dominio empresas. Entrada común: `ruc` (11 dígitos de empresa
 
 ## Flujo recomendado
 
-`search_companies` → `get_company_info` → listados con el RUC. Para direcciones y ubigeos usa `get_location` (ver [Obtener convocatorias](/mcp/obtener-convocatorias/), herramientas complementarias).
+`search_companies` → `get_company_info` → listados con el RUC. Para direcciones y ubigeos usa `get_location` (ver [Obtener convocatorias](/mcp/get-tenders/), herramientas complementarias).
 
 Por ejemplo: busca la empresa por nombre, identifica su RUC en el resultado y pide ficha, estado SUNAT o cualquier listado con ese RUC. Los rankings (`deuda`, `penalidades`) no requieren RUC: sirven para descubrir empresas y luego profundizar con el flujo anterior.

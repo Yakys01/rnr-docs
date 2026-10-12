@@ -10,7 +10,7 @@ Cualquier cliente que hable MCP sobre HTTP se conecta a rnr-api con los mismos t
 1. **URL**: `https://api.runrunapi.com/mcp`.
 2. **Auth**: OAuth (RFC 8414/9728 via el metadata) o Bearer de sesión (API key REST).
 3. **Herramientas**: se listan con `tools/list`; los resultados llegan en `structuredContent` (listas bajo `items`) o en texto JSON en clientes legacy.
-4. **Idioma**: los datos y descripciones vienen en español; los identificadores de herramienta (en inglés, ver [referencia abajo](/mcp/obtener-usuarios/)) son estables.
+4. **Idioma**: los datos y descripciones vienen en español; los identificadores de herramienta (en inglés, ver [referencia abajo](/mcp/get-users/)) son estables.
 
 ## Qué verificar al integrar
 
@@ -19,4 +19,4 @@ Cualquier cliente que hable MCP sobre HTTP se conecta a rnr-api con los mismos t
 - Que lea `structuredContent` para consumir los objetos y listas directamente.
 - Que trate los errores JSON-RPC con `isError: true` y el mensaje en texto.
 
-El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/obtener-usuarios/).
+El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

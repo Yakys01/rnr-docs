@@ -26,4 +26,4 @@ Con el servidor registrado, pide en lenguaje natural lo que necesites; Codex eli
 - *"Dame la ficha de la empresa con RUC 20512345678"*
 - *"Dame el detalle de la convocatoria C1234567"*
 
-Si el servidor responde `401`, el token falta o expiró: regenera el API key o repite el flujo OAuth. El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/obtener-usuarios/).
+Si el servidor responde `401`, el token falta o expiró: regenera el API key o repite el flujo OAuth. El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

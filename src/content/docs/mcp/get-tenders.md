@@ -29,4 +29,4 @@ Herramientas por código OSCE, con paginación (`limit`/`offset`) y filtros opci
 
 ## Cómo encadenar
 
-Los códigos OSCE llegan de otras herramientas: los listados de [Obtener compañías](/mcp/obtener-companias/) traen códigos de convocatoria, contrato, adjudicación y postulación que puedes resolver aquí con `get_convocatory` / `get_contract` para obtener el detalle completo del proceso.
+Los códigos OSCE llegan de otras herramientas: los listados de [Obtener compañías](/mcp/get-companies/) traen códigos de convocatoria, contrato, adjudicación y postulación que puedes resolver aquí con `get_convocatory` / `get_contract` para obtener el detalle completo del proceso.

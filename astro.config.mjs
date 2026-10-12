@@ -1,11 +1,33 @@
 import starlight from "@astrojs/starlight";
 import { defineConfig, passthroughImageService } from "astro/config";
+import starlightContextualMenu from "starlight-contextual-menu";
+import starlightLlmsTxt from "starlight-llms-txt";
 import starlightThemeNext from "starlight-theme-next";
 
 import { ENV } from "./src/constants";
 
 export default defineConfig({
+  // Dominio público de la doc: lo usan el sitemap y `starlight-llms-txt` para
+  // las URLs absolutas de /llms.txt.
+  site: "https://docs.runrunapi.com/",
   output: "static",
+  // URLs viejas en español de páginas renombradas a rutas en inglés: en estático
+  // Astro emite un HTML con meta refresh por cada entrada.
+  redirects: {
+    "/empezamos/": "/get-started/",
+    "/soporte/": "/support/",
+    "/chats-humanos/chatgpt/": "/humans/chatgpt/",
+    "/chats-humanos/claude/": "/humans/claude/",
+    "/chats-humanos/jania/": "/humans/jan/",
+    "/agentes-ia/claude-code/": "/agents/claude-code/",
+    "/agentes-ia/codex/": "/agents/codex/",
+    "/agentes-ia/otros-proveedores/": "/agents/other-providers/",
+    "/mcp/obtener-usuarios/": "/mcp/get-users/",
+    "/mcp/obtener-companias/": "/mcp/get-companies/",
+    "/mcp/obtener-convocatorias/": "/mcp/get-tenders/",
+    "/docs/autenticacion/": "/docs/authentication/",
+    "/docs/primeros-pasos/": "/docs/first-steps/",
+  },
   server: { port: ENV.PORT },
   // Passthrough evita la dependencia nativa `sharp`: la media del hero es SVG y
   // no necesita optimización. Si se agregan imágenes raster, instalar sharp.
@@ -13,6 +35,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "RunRunApi",
+      // Sitio monolingüe en español: `root` es la única locale, sin prefijo en
+      // las rutas ni selector de idioma, y los textos de la interfaz salen de
+      // las traducciones `es` de Starlight.
+      locales: { root: { label: "Español", lang: "es" } },
       logo: {
         light: './public/logo-light.svg',
         dark: './public/logo-dark.svg',
@@ -23,35 +49,43 @@ export default defineConfig({
       components: { Header: "./src/components/Header.astro" },
       sidebar: [
         { label: "Introducción", link: "/docs/" },
-        { label: "Empezamos", link: "/empezamos/" },
+        { label: "Empezamos", link: "/get-started/" },
         {
           label: "Para chats humanos",
           items: [
-            { label: "ChatGPT", link: "/chats-humanos/chatgpt/", attrs: { "data-icon": "openai" } },
-            { label: "Claude", link: "/chats-humanos/claude/", attrs: { "data-icon": "claude" } },
-            { label: "Jania", link: "/chats-humanos/jania/", attrs: { "data-icon": "jan-ia" } },
+            { label: "Introducción", link: "/humans/" },
+            { label: "ChatGPT", link: "/humans/chatgpt/", attrs: { "data-icon": "openai" } },
+            { label: "Claude", link: "/humans/claude/", attrs: { "data-icon": "claude" } },
+            { label: "Jan AI", link: "/humans/jan/", attrs: { "data-icon": "jan-ia" } },
           ],
         },
         {
           label: "Para agentes IA",
           items: [
-            { label: "Claude Code", link: "/agentes-ia/claude-code/", attrs: { "data-icon": "claudecode" } },
-            { label: "Codex", link: "/agentes-ia/codex/", attrs: { "data-icon": "codex" } },
-            { label: "Otros proveedores", link: "/agentes-ia/otros-proveedores/" },
+            { label: "Introducción", link: "/agents/" },
+            { label: "Claude Code", link: "/agents/claude-code/", attrs: { "data-icon": "claudecode" } },
+            { label: "Codex", link: "/agents/codex/", attrs: { "data-icon": "codex" } },
+            { label: "Otros proveedores", link: "/agents/other-providers/" },
           ],
         },
         {
           label: "MCP Referencia",
           items: [
-            { label: "Obtener usuarios", link: "/mcp/obtener-usuarios/" },
-            { label: "Obtener compañías", link: "/mcp/obtener-companias/" },
-            { label: "Obtener convocatorias", link: "/mcp/obtener-convocatorias/" },
+            { label: "Introducción", link: "/mcp/" },
+            { label: "Obtener usuarios", link: "/mcp/get-users/" },
+            { label: "Obtener compañías", link: "/mcp/get-companies/" },
+            { label: "Obtener convocatorias", link: "/mcp/get-tenders/" },
           ],
         },
         { label: "Apis Referencia", link: "/reference/" },
-        { label: "Soporte", link: "/soporte/" },
+        { label: "Soporte", link: "/support/" },
       ],
-      plugins: [starlightThemeNext()],
+      plugins: [
+        starlightThemeNext(),
+        starlightContextualMenu(),
+        // Genera /llms.txt, /llms-full.txt y /llms-small.txt para agentes IA.
+        starlightLlmsTxt(),
+      ],
     }),
   ],
 });

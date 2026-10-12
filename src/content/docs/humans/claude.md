@@ -22,4 +22,4 @@ Claude (web o escritorio) se conecta a rnr-api como conector MCP remoto. Antes d
 
 - Si Claude no lista herramientas, verifica que el conector quedó habilitado en la conversación.
 - Si responde `401`, vuelve a conectar: Claude repite el flujo OAuth con el discovery del metadata.
-- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/obtener-usuarios/).
+- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

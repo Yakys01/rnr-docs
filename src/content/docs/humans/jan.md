@@ -25,4 +25,4 @@ Jania se conecta a rnr-api como servidor MCP remoto. Antes de empezar necesitas 
 ## Si algo falla
 
 - Si Jania no lista herramientas, revisa que la URL sea exactamente `https://api.runrunapi.com/mcp` y que el Bearer sea válido.
-- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/obtener-usuarios/).
+- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

@@ -6,7 +6,7 @@ description: Cómo conectarte al MCP de rnr-api — endpoint, autenticación, cu
 Antes de conectarte necesitas dos cosas: la **URL del servidor MCP** y **credenciales válidas**. El flujo típico es:
 
 1. Obtén tus credenciales en la plataforma: [www.runrunapi.com](https://www.runrunapi.com).
-2. Elige tu cliente: un [chat humano](/chats-humanos/chatgpt/) o un [agente de código](/agentes-ia/claude-code/).
+2. Elige tu cliente: un [chat humano](/humans/chatgpt/) o un [agente de código](/agents/claude-code/).
 3. Registra el servidor MCP con la URL de abajo y autentícate.
 4. Prueba con `tools/list` para ver las 16 herramientas disponibles.
 

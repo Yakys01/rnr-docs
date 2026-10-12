@@ -16,7 +16,6 @@
  * el original) porque Starlight no publica tipos para los módulos virtuales y
  * `astro check` falla.
  */
-import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro';
 import Search from '@astrojs/starlight/components/Search.astro';
 import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
@@ -52,7 +51,6 @@ const navLinks = [
       <SocialIcons />
     </div>
     <ThemeSelect />
-    <LanguageSelect />
   </div>
 </div>
 
@@ -104,7 +102,8 @@ const navLinks = [
         );
         display: grid;
         grid-template-columns:
-          /* 1 (título): llega hasta el borde izquierdo de la columna de contenido o el ancho del título, el mayor. */
+          /* 1 (título): hasta el borde izquierdo de la columna de contenido o el
+             ancho del título, lo que sea mayor. */
           minmax(
               calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
               auto

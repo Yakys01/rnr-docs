@@ -1,3 +1,19 @@
+/* Acento naranja: el tema Next fija sus azules en `@layer nextjs`
+ * (starlight-theme-next/styles.css), y este archivo va sin capa, así que gana
+ * al tema sin tocar node_modules. Mismo patrón que el tema: dark en `:root`,
+ * claro en `[data-theme='light']`, con `::backdrop` porque no hereda. */
+:root, ::backdrop {
+  --sl-color-accent-low: rgba(67, 20, 7, 1);
+  --sl-color-accent: rgba(249, 115, 22, 1);
+  --sl-color-accent-high: rgba(254, 215, 170, 1);
+}
+
+:root[data-theme='light'], [data-theme='light'] ::backdrop {
+  --sl-color-accent-low: rgba(255, 237, 213, 1);
+  --sl-color-accent: rgba(194, 65, 12, 1);
+  --sl-color-accent-high: rgba(124, 45, 18, 1);
+}
+
 /*
  * Scalar sigue el tema de Starlight.
  *
@@ -28,12 +44,30 @@ html[data-theme='dark'] .scalar-app {
   color-scheme: dark;
 }
 
-/* Logo del lockup: 48px de ancho, como en la app. El SiteTitle de Starlight lo
- * capa a la altura del header (32/40px), así que fijamos el ancho y dejamos que
- * el alto salga del aspect ratio del svg (256x157). */
+/* Scalar elige su modo por `prefers-color-scheme` (no sigue a Starlight) y lo
+ * marca con `light-mode`/`dark-mode` en <body>. El mapa de variables de arriba
+ * pinta el interior de la app, pero el fondo del <body> y su `color-scheme`
+ * quedan en el modo del SO: con el SO en oscuro y el sitio en claro, el header
+ * translúcido del tema se ve como una franja gris oscura. Los alineamos con
+ * Starlight. */
+html[data-theme='light'] :is(body, html).dark-mode {
+  background-color: var(--sl-color-bg);
+  color-scheme: light;
+}
+
+html[data-theme='dark'] :is(body, html).light-mode {
+  background-color: var(--sl-color-bg);
+  color-scheme: dark;
+}
+
+/* Logo del lockup: 48px de ancho, como en la app. El ancho va explícito y no
+ * como `max-width`: con `max-width` el cálculo intrínseco de Chrome le daba 0px
+ * al logo, `.site-title` se medía 48px de menos y el wordmark quedaba recortado
+ * (la caja del texto se encogía en vez de crecer). El alto sale del aspect
+ * ratio del svg (256x157 → 29px). */
 .site-title img {
+  width: 3rem;
   height: auto;
-  max-width: 3rem;
 }
 
 /* Wordmark del lockup (copiado de apps/web LogoLockup.astro): Saira Stencil.
@@ -50,6 +84,12 @@ html[data-theme='dark'] .scalar-app {
   font-family: "Saira Stencil", sans-serif;
 }
 
+/* Espacio logo-wordmark del lockup. Starlight usa `--sl-nav-gap` (1.5rem); el
+ * token se deja intacto porque también separa las columnas del header. */
+.site-title {
+  gap: 0.5rem;
+}
+
 /* Cabecera: el buscador y el selector de tema tienen que verse cuadrados entre
  * sí. El tema les da cajas distintas (el botón de búsqueda mide 2.5rem fijo y
  * al select solo le pone borde), así que fijamos la misma altura. El bloque
@@ -59,17 +99,31 @@ html[data-theme='dark'] .scalar-app {
   display: none;
 }
 
-:is(starlight-theme-select, starlight-lang-select) {
+starlight-theme-select {
   display: flex;
   align-items: center;
   block-size: 2.5rem;
 }
 
+/* El ancho del <select> de tema lo fija Starlight inline (6.25em) y con las
+ * etiquetas en español ("Automático") el texto salía recortado con puntos
+ * suspensivos. Con `width: auto` mide según su contenido. */
+starlight-theme-select select {
+  width: auto;
+}
+
 /* Nav del header: la renderiza `src/components/Header.astro` (el tema Next no
  * tiene nav en el header). Sin iconos, solo texto. */
 .nav-bar {
+  margin-top: .25rem;
   gap: 1.5rem;
   margin-inline-start: 1.5rem;
+}
+
+.site-title {
+   color: var(--sl-color-white);
+   border-right: 1px solid var(--sl-color-hairline);
+   padding-right: 1.5rem;
 }
 
 .nav-bar a {
@@ -88,6 +142,7 @@ html[data-theme='dark'] .scalar-app {
  * sidebar de escritorio y al menú móvil (Starlight usa un solo `sidebar-pane`). */
 .sidebar-content a[data-icon] {
   position: relative;
+  margin-inline-start: 5px;
   padding-inline-start: calc(var(--sl-sidebar-item-padding-inline) + 1.5em);
 }
 

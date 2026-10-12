@@ -41,4 +41,4 @@ Con el servidor conectado, pide en lenguaje natural lo que necesites; Claude Cod
 - *"Lista los contratos del RUC 20512345678 en 2024"*
 - *"Recolecta de nuevo la ficha del DNI 12345678"* (usa `collect_user_info`, la única herramienta que no es de lectura pura)
 
-El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/obtener-usuarios/).
+El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

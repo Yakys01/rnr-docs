@@ -13,7 +13,7 @@ Salvo las rutas de `system` y `session`, todas las operaciones requieren un toke
 Authorization: Bearer <token>
 ```
 
-Detalle en [Autenticación](/docs/autenticacion/).
+Detalle en [Autenticación](/docs/authentication/).
 
 ## Primera consulta
 
