@@ -32,9 +32,17 @@ const apiServer = ENV.APPAPI_URL;
 </StarlightPage>
 
 <style is:global>
-  /* Solo la referencia Scalar: fuera la franja de título y el footer del tema. */
-  [data-slot='doc-title'],
-  [data-slot='layout'] > footer {
+  /* Solo la referencia Scalar: fuera la franja del título vacío y el ancho
+   * máximo del contenedor de Starlight (Scalar necesita todo el viewport). */
+  .content-panel:has(> .sl-container > #_top) {
     display: none;
+  }
+
+  .content-panel:has(.scalar-app) {
+    padding: 0;
+  }
+
+  .content-panel:has(.scalar-app) > .sl-container {
+    max-width: none;
   }
 </style>

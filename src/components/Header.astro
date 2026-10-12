@@ -1,0 +1,121 @@
+---
+/**
+ * Copia del Header de Starlight (0.42.x) con la nav de enlaces del sitio.
+ *
+ * `starlight-theme-next` es solo CSS sobre el marcado estándar, así que
+ * reutilizamos su estructura y añadimos la nav que antes renderizaba lucode.
+ *
+ * IMPORTANTE: al reemplazar el componente, Astro deja de emitir el `<style>`
+ * original (los estilos de componentes son scoped y solo se emiten si el
+ * componente se renderiza). Por eso el bloque `<style>` de abajo es una copia
+ * literal del de `@astrojs/starlight/dist/components/Header.astro`: es el que
+ * define el layout del header (fila en móvil, grid de 3 columnas ≥800px) que el
+ * tema asume. Si se actualiza Starlight, comparar con el original.
+ *
+ * Los componentes se importan del paquete (y no de `virtual:starlight/...` como
+ * el original) porque Starlight no publica tipos para los módulos virtuales y
+ * `astro check` falla.
+ */
+import LanguageSelect from '@astrojs/starlight/components/LanguageSelect.astro';
+import Search from '@astrojs/starlight/components/Search.astro';
+import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+
+import { ENV } from '../constants';
+
+const navLinks = [
+  { label: 'Docs', link: '/docs/' },
+  { label: 'Api Referencia', link: '/reference/' },
+  { label: 'Plataforma', link: ENV.APPWEB_URL },
+];
+---
+
+<div class="header">
+  <div class="title-wrapper sl-flex">
+    <SiteTitle />
+    <nav class="nav-bar sl-hidden lg:sl-flex" aria-label="Navegación principal">
+      {
+        navLinks.map(({ label, link }) => (
+          <a href={link}>
+            <span>{label}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+  <div class="sl-flex print:hidden">
+    <Search />
+  </div>
+  <div class="sl-hidden md:sl-flex print:hidden right-group">
+    <div class="sl-flex social-icons">
+      <SocialIcons />
+    </div>
+    <ThemeSelect />
+    <LanguageSelect />
+  </div>
+</div>
+
+<style>
+  @layer starlight.core {
+    .header {
+      display: flex;
+      gap: var(--sl-nav-gap);
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    .title-wrapper {
+      /* Evita que un título largo desborde y tape el buscador en pantallas angostas. */
+      overflow: clip;
+      /* Evita recortar el anillo de foco del enlace de dentro. */
+      padding: 0.25rem;
+      margin: -0.25rem;
+      min-width: 0;
+    }
+
+    .right-group,
+    .social-icons {
+      gap: 1rem;
+      align-items: center;
+    }
+    .social-icons::after {
+      content: '';
+      height: 2rem;
+      border-inline-end: 1px solid var(--sl-color-gray-5);
+    }
+
+    @media (min-width: 50rem) {
+      :global(:root[data-has-sidebar]) {
+        --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+      }
+      :global(:root:not([data-has-toc])) {
+        --__toc-width: 0rem;
+      }
+      .header {
+        --__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+        --__main-column-fr: calc(
+          (
+              100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+                (2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+                var(--sl-content-width)
+            ) / 2
+        );
+        display: grid;
+        grid-template-columns:
+          /* 1 (título): llega hasta el borde izquierdo de la columna de contenido o el ancho del título, el mayor. */
+          minmax(
+              calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+              auto
+            )
+            /* 2 (buscador): todo el espacio libre. */
+            1fr
+            /* 3 (derecha): el espacio que necesiten. */
+            auto;
+        align-content: center;
+      }
+    }
+  }
+</style>
+

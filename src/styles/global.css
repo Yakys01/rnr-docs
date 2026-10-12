@@ -2,9 +2,9 @@
  * Scalar sigue el tema de Starlight.
  *
  * Scalar no lee `data-theme`, así que mapeamos sus variables a los tokens de
- * Starlight. La escala de grises de lucode ya se invierte en dark, por eso un
- * solo mapa cubre ambos modos. El CSS de Scalar vive en `@layer`, así que este
- * (sin capa) y con más especificidad siempre gana.
+ * Starlight: un solo mapa cubre ambos modos porque el tema invierte los grises
+ * en dark. El CSS de Scalar vive en `@layer`, así que este (sin capa) y con más
+ * especificidad siempre gana.
  */
 html[data-theme] .scalar-app {
   --scalar-color-1: var(--sl-color-text);
@@ -28,15 +28,17 @@ html[data-theme='dark'] .scalar-app {
   color-scheme: dark;
 }
 
-/* Logo más grande que el tope de 32px del SiteTitle de lucode. */
-.site-title .logo {
-  max-height: 48px;
-  max-width: 48px;
+/* Logo del lockup: 48px de ancho, como en la app. El SiteTitle de Starlight lo
+ * capa a la altura del header (32/40px), así que fijamos el ancho y dejamos que
+ * el alto salga del aspect ratio del svg (256x157). */
+.site-title img {
+  height: auto;
+  max-width: 3rem;
 }
 
 /* Wordmark del lockup (copiado de apps/web LogoLockup.astro): Saira Stencil.
- * El tope de lucode pone font-weight:700 sobre un unico archivo 400 → faux
- * bold, igual que el `font-saira font-bold` de la app. */
+ * El único archivo es 400, igual que el `font-saira font-bold` de la app:
+ * si el peso heredado es 600, el navegador lo sintetiza. */
 @font-face {
   font-family: "Saira Stencil";
   src: url("../assets/fonts/saira-stencil-latin-400-normal.woff2") format("woff2");
@@ -44,99 +46,86 @@ html[data-theme='dark'] .scalar-app {
   font-display: swap;
 }
 
-.site-title .title-text {
+.site-title span {
   font-family: "Saira Stencil", sans-serif;
 }
 
-/* Nav del header: más aire respecto al logo y un icono por enlace.
- * Los iconos son copias de los BuiltInIcons de Starlight en /svgs/nav,
- * enmascarados para heredar el color del texto (incluido hover y tema oscuro).
- * Cada enlace marca su icono con `data-icon` desde `navLinks` en astro.config.mjs. */
-.site-title-wrapper .site-title {
-  margin-right: calc(var(--spacing) * 6);
+/* Cabecera: el buscador y el selector de tema tienen que verse cuadrados entre
+ * sí. El tema les da cajas distintas (el botón de búsqueda mide 2.5rem fijo y
+ * al select solo le pone borde), así que fijamos la misma altura. El bloque
+ * `.social-icons` se oculta porque sin `social` en astro.config queda vacío y
+ * el tema solo esconde su separador a partir de 800px. */
+.social-icons:empty {
+  display: none;
 }
 
-.nav-bar a[data-icon] {
-  gap: calc(var(--spacing) * 1.5);
+:is(starlight-theme-select, starlight-lang-select) {
+  display: flex;
+  align-items: center;
+  block-size: 2.5rem;
 }
 
-.nav-bar a[data-icon]::before {
+/* Nav del header: la renderiza `src/components/Header.astro` (el tema Next no
+ * tiene nav en el header). Sin iconos, solo texto. */
+.nav-bar {
+  gap: 1.5rem;
+  margin-inline-start: 1.5rem;
+}
+
+.nav-bar a {
+  color: var(--sl-color-gray-1);
+  font-size: var(--sl-text-sm);
+  text-decoration: none;
+}
+
+.nav-bar a:hover {
+  color: var(--sl-color-white);
+}
+
+/* Iconos de marca del sidebar: cada enlace marca su icono con `data-icon`
+ * (attrs) en astro.config.mjs. El `::before` va posicionado sobre el padding
+ * izquierdo, que agrandamos para reservarle el hueco. El mismo nodo sirve al
+ * sidebar de escritorio y al menú móvil (Starlight usa un solo `sidebar-pane`). */
+.sidebar-content a[data-icon] {
+  position: relative;
+  padding-inline-start: calc(var(--sl-sidebar-item-padding-inline) + 1.5em);
+}
+
+.sidebar-content a[data-icon]::before {
   content: "";
-  flex: none;
-  width: 1em;
-  height: 1em;
-  background-color: currentColor;
-  -webkit-mask: var(--nav-icon) center / contain no-repeat;
-  mask: var(--nav-icon) center / contain no-repeat;
-}
-
-.nav-bar a[data-icon="docs"] {
-  --nav-icon: url("/svgs/nav/docs.svg");
-}
-
-.nav-bar a[data-icon="api"] {
-  --nav-icon: url("/svgs/nav/api.svg");
-}
-
-.nav-bar a[data-icon="plataforma"] {
-  --nav-icon: url("/svgs/nav/plataforma.svg");
-}
-
-/* Los items del sidebar (desktop y drawer móvil) van indentados 1rem respecto
- * a los títulos de grupo, que se quedan a la izquierda. */
-.entry-link,
-.links-docs a {
-  margin-left: 1rem;
-}
-
-/* Iconos de marca del sidebar (desktop y drawer móvil): mismo patrón que el
- * nav del header, pero a color. Cada enlace marca su icono con `data-icon`
- * (attrs) en astro.config.mjs; lo pintan tanto el SidebarSublist de lucode
- * (`.entry-link`) como los enlaces del drawer móvil (`.links-docs`). */
-.entry-link[data-icon]::before,
-.links-docs a[data-icon]::before {
-  content: "";
+  position: absolute;
+  inset-inline-start: var(--sl-sidebar-item-padding-inline);
+  inset-block-start: 50%;
+  translate: 0 -50%;
   width: 1em;
   height: 1em;
   background: var(--entry-icon) center / contain no-repeat;
 }
 
-.entry-link[data-icon]::before {
-  flex: none;
-  margin-left: calc(var(--spacing) * 2);
-}
-
-.links-docs a[data-icon]::before {
-  display: inline-block;
-  margin-right: calc(var(--spacing) * 1.5);
-  vertical-align: middle;
-}
-
-[data-icon="openai"] {
+.sidebar-content a[data-icon="openai"] {
   --entry-icon: url("/svgs/desktop/openai.svg");
 }
 
-[data-icon="claude"] {
+.sidebar-content a[data-icon="claude"] {
   --entry-icon: url("/svgs/desktop/claude.svg");
 }
 
-[data-icon="jan-ia"] {
+.sidebar-content a[data-icon="jan-ia"] {
   --entry-icon: url("/svgs/desktop/jan-ia.svg");
 }
 
-[data-icon="claudecode"] {
+.sidebar-content a[data-icon="claudecode"] {
   --entry-icon: url("/svgs/agents/claudecode.svg");
 }
 
-[data-icon="codex"] {
+.sidebar-content a[data-icon="codex"] {
   --entry-icon: url("/svgs/agents/codex.svg");
 }
 
 /* openai.svg usa `currentColor`: como background-image se resuelve a negro fijo
  * (invisible en tema oscuro). El shorthand limpia el background-image y la
- * máscara deja ver el color del texto. Igual para ollama/opencode a futuro. */
-.entry-link[data-icon="openai"]::before,
-.links-docs a[data-icon="openai"]::before {
+ * máscara deja ver el color del texto. */
+.sidebar-content a[data-icon="openai"]::before {
   background: currentColor;
   -webkit-mask: var(--entry-icon) center / contain no-repeat;
   mask: var(--entry-icon) center / contain no-repeat;
