@@ -1,9 +1,9 @@
 ---
 title: ChatGPT
-description: Cómo usar rnr-api desde ChatGPT con un conector MCP.
+description: Cómo usar RunRunApi desde ChatGPT con un conector MCP.
 ---
 
-ChatGPT puede consultar los datos de rnr-api en lenguaje natural si lo registras como conector MCP. Antes de empezar necesitas tus credenciales de la plataforma ([www.runrunapi.com](https://www.runrunapi.com)), que emite el token OAuth que ChatGPT usará.
+ChatGPT puede consultar los datos de RunRunApi en lenguaje natural si lo registras como conector MCP. Antes de empezar necesitas tus credenciales de la plataforma ([www.runrunapi.com](https://www.runrunapi.com)), que emite el token OAuth que ChatGPT usará.
 
 ## Conectar el servidor
 

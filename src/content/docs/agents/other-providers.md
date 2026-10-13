@@ -1,9 +1,9 @@
 ---
 title: Otros proveedores
-description: Cómo conectar cualquier cliente MCP sobre HTTP a rnr-api.
+description: Cómo conectar cualquier cliente MCP sobre HTTP a RunRunApi.
 ---
 
-Cualquier cliente que hable MCP sobre HTTP se conecta a rnr-api con los mismos tres datos: URL, autenticación y listado de herramientas. Esto cubre Cursor, Windsurf, Gemini CLI, Zed y clientes propios construidos con `@modelcontextprotocol/sdk`.
+Cualquier cliente que hable MCP sobre HTTP se conecta a RunRunApi con los mismos tres datos: URL, autenticación y listado de herramientas. Esto cubre Cursor, Windsurf, Gemini CLI, Zed y clientes propios construidos con `@modelcontextprotocol/sdk`.
 
 ## Conexión base
 

@@ -3,6 +3,7 @@ import { defineConfig, passthroughImageService } from "astro/config";
 import starlightContextualMenu from "starlight-contextual-menu";
 import starlightLlmsTxt from "starlight-llms-txt";
 import starlightThemeNext from "starlight-theme-next";
+import lottie from "astro-integration-lottie";
 
 import { ENV } from "./src/constants";
 
@@ -33,6 +34,9 @@ export default defineConfig({
   // no necesita optimización. Si se agregan imágenes raster, instalar sharp.
   image: { service: passthroughImageService() },
   integrations: [
+    // Animaciones Lottie (astro-integration-lottie): inyecta el loader en todas
+    // las páginas, pero solo descarga el player en las que tienen `data-lottie`.
+    lottie(),
     starlight({
       title: "RunRunApi",
       // Sitio monolingüe en español: `root` es la única locale, sin prefijo en
@@ -83,7 +87,11 @@ export default defineConfig({
       ],
       plugins: [
         starlightThemeNext(),
-        starlightContextualMenu(),
+        // Menú contextual por página: copiar como Markdown, ver Markdown y
+        // abrir la página en ChatGPT/Claude.
+        starlightContextualMenu({
+          actions: ["copy", "view", "chatgpt", "claude"],
+        }),
         // Genera /llms.txt, /llms-full.txt y /llms-small.txt para agentes IA.
         starlightLlmsTxt(),
       ],

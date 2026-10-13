@@ -1,15 +1,15 @@
 ---
 title: Claude
-description: Cómo usar rnr-api desde Claude con un conector MCP.
+description: Cómo usar RunRunApi desde Claude con un conector MCP.
 ---
 
-Claude (web o escritorio) se conecta a rnr-api como conector MCP remoto. Antes de empezar necesitas tus credenciales de la plataforma ([www.runrunapi.com](https://www.runrunapi.com)), que emite el token OAuth que Claude usará.
+Claude (web o escritorio) se conecta a RunRunApi como conector MCP remoto. Antes de empezar necesitas tus credenciales de la plataforma ([www.runrunapi.com](https://www.runrunapi.com)), que emite el token OAuth que Claude usará.
 
 ## Conectar el servidor
 
 1. En Claude (web o escritorio) agrega el servidor en *Settings → Connectors → Add custom connector*.
 2. URL: `https://api.runrunapi.com/mcp`.
-3. Autenticación: OAuth con el AS de la plataforma; Claude completa el flujo con el discovery del metadata.
+3. Autenticación: OAuth con la plataforma; Claude completa el flujo con el discovery del metadata.
 4. Con el conector activo, pregunta directamente.
 
 ## Qué puedes preguntar

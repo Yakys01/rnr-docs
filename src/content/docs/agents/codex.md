@@ -1,6 +1,6 @@
 ---
 title: Codex
-description: Cómo conectar Codex al MCP de rnr-api.
+description: Cómo conectar Codex al MCP de RunRunApi.
 ---
 
 Codex consume servidores MCP remotos declarados en su configuración. Antes de empezar decide tu autenticación: OAuth si tu versión de Codex lo soporta, o un API key de sesión de la REST como Bearer.
@@ -10,13 +10,13 @@ Codex consume servidores MCP remotos declarados en su configuración. Antes de e
 Configura el servidor MCP remoto en `~/.codex/config.toml`:
 
 ```toml
-[mcp_servers.rnr-api]
+[mcp_servers.runrunapi]
 url = "https://api.runrunapi.com/mcp"
 ```
 
 ## Autenticación
 
-Si no hay OAuth automático, genera un API key de sesión vía la REST (`/session`) y configúralo como header Bearer según la versión de Codex que uses.
+Si no hay OAuth automático, obtén un token de acceso en [www.runrunapi.com](https://www.runrunapi.com) y configúralo como header Bearer según la versión de Codex que uses.
 
 ## Uso
 

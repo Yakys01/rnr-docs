@@ -1,16 +1,16 @@
 ---
 title: Claude Code
-description: Cómo conectar Claude Code al MCP de rnr-api.
+description: Cómo conectar Claude Code al MCP de RunRunApi.
 ---
 
-Claude Code habla MCP sobre HTTP y soporta el flujo OAuth de rnr-api, así que no necesita tokens manuales: al invocar una herramienta por primera vez, pide autorización.
+Claude Code habla MCP sobre HTTP y soporta el flujo OAuth de la plataforma, así que no necesita tokens manuales: al invocar una herramienta por primera vez, pide autorización.
 
 ## Registrar el servidor
 
 En un comando (sesión):
 
 ```sh
-claude mcp add --transport http rnr-api https://api.runrunapi.com/mcp
+claude mcp add --transport http runrunapi https://api.runrunapi.com/mcp
 ```
 
 O en `.mcp.json` del proyecto:
@@ -18,7 +18,7 @@ O en `.mcp.json` del proyecto:
 ```json
 {
   "mcpServers": {
-    "rnr-api": {
+    "runrunapi": {
       "type": "http",
       "url": "https://api.runrunapi.com/mcp"
     }

@@ -20,13 +20,18 @@ import Search from '@astrojs/starlight/components/Search.astro';
 import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
 import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+import { Icon } from '@astrojs/starlight/components';
 
 import { ENV } from '../constants';
 
-const navLinks = [
-  { label: 'Docs', link: '/docs/' },
+type NavLink = { label: string; link: string; external?: boolean };
+
+const navLinks: NavLink[] = [
+  { label: 'Guia', link: '/docs/' },
   { label: 'Api Referencia', link: '/reference/' },
-  { label: 'Plataforma', link: ENV.APPWEB_URL },
+  // Sin fallback a propósito (ver src/constants.ts): si falta la variable, el `!` truena en el build.
+  { label: 'Plataforma', link: ENV.APPWEB_URL!, external: true },
+  { label: 'Blog', link: ENV.APPWEB_URL!, external: true },
 ];
 ---
 
@@ -35,9 +40,10 @@ const navLinks = [
     <SiteTitle />
     <nav class="nav-bar sl-hidden lg:sl-flex" aria-label="Navegación principal">
       {
-        navLinks.map(({ label, link }) => (
+        navLinks.map(({ label, link, external }) => (
           <a href={link}>
             <span>{label}</span>
+            {external && <Icon name="external" />}
           </a>
         ))
       }
@@ -71,6 +77,13 @@ const navLinks = [
       padding: 0.25rem;
       margin: -0.25rem;
       min-width: 0;
+    }
+
+    /* Los enlaces con icono externo: alineados y con un pequeño espacio. */
+    .nav-bar a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .right-group,

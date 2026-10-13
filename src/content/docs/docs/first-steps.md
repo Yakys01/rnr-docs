@@ -3,7 +3,7 @@ title: Primeros pasos
 description: Host, autenticación y una primera consulta a la API.
 ---
 
-La API expone personas, empresas y contrataciones del Estado peruano. En desarrollo el host es `http://localhost:4000` (configurable con `API_SERVER`).
+La API expone personas, empresas y contrataciones del Estado peruano. El servicio de datos es **api.runrunapi.com**; los tokens de acceso se obtienen en **www.runrunapi.com**.
 
 ## Autenticación
 
@@ -18,7 +18,7 @@ Detalle en [Autenticación](/docs/authentication/).
 ## Primera consulta
 
 ```sh
-curl -H "Authorization: Bearer $TOKEN" http://localhost:4000/user/info/12345678
+curl -H "Authorization: Bearer $TOKEN" https://api.runrunapi.com/user/info/12345678
 ```
 
 ## Listados y filtros

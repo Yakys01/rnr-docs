@@ -1,6 +1,6 @@
 ---
 title: Empezamos
-description: Cómo conectarte al MCP de rnr-api — endpoint, autenticación, cuota y paginación.
+description: Cómo conectarte al MCP de RunRunApi — endpoint, autenticación, cuota y paginación.
 ---
 
 Antes de conectarte necesitas dos cosas: la **URL del servidor MCP** y **credenciales válidas**. El flujo típico es:
@@ -12,7 +12,7 @@ Antes de conectarte necesitas dos cosas: la **URL del servidor MCP** y **credenc
 
 ## Endpoint
 
-- Servidor MCP: `POST /mcp` (JSON-RPC, transport HTTP). Configurable vía `MCP_PUBLIC_URL`.
+- Servidor MCP: `POST https://api.runrunapi.com/mcp` (JSON-RPC, transport HTTP).
 - Health check público: `GET /health/mcp`.
 - Discovery OAuth (RFC 9728): `GET /.well-known/oauth-protected-resource/mcp`.
 
@@ -20,10 +20,10 @@ Antes de conectarte necesitas dos cosas: la **URL del servidor MCP** y **credenc
 
 El MCP es un *resource server* OAuth. Acepta dos Bearer, y el cupo es compartido entre REST y MCP:
 
-1. **JWT OAuth** (camino principal): tokens emitidos por el Authorization Server Better Auth de la plataforma. El JWT se verifica contra `OAUTH_JWKS_URL` y debe tener audience `MCP_PUBLIC_URL`.
-2. **API key REST** (retrocompatible): un Bearer de sesión válido del `authGuard` también opera `/mcp`.
+1. **JWT OAuth** (camino principal): tokens emitidos por la plataforma ([www.runrunapi.com](https://www.runrunapi.com)); con ellos accedés a los datos de `api.runrunapi.com`.
+2. **API key REST** (retrocompatible): un Bearer de sesión válido de la API también opera `/mcp`.
 
-Si el token falta o es inválido, el endpoint responde con el challenge `WWW-Authenticate` apuntando al metadata OAuth. Sin issuer/JWKS configurados, `/mcp` sigue operativo con la verificación de Bearer de sesión.
+Si el token falta o es inválido, el endpoint responde con el challenge `WWW-Authenticate` apuntando al metadata OAuth.
 
 ## Cuota y paginación
 
