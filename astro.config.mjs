@@ -57,6 +57,7 @@ export default defineConfig({
             { label: "ChatGPT", link: "/humans/chatgpt/", attrs: { "data-icon": "openai" } },
             { label: "Claude", link: "/humans/claude/", attrs: { "data-icon": "claude" } },
             { label: "Jan AI", link: "/humans/jan/", attrs: { "data-icon": "jan-ia" } },
+            { label: "Otros proveedores", link: "/humans/other-providers/" },
           ],
         },
         {

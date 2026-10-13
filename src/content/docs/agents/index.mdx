@@ -3,7 +3,29 @@ title: Agentes IA
 description: Conecta Claude Code, Codex o cualquier cliente MCP sobre HTTP al MCP de rnr-api.
 ---
 
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
 Los agentes de código se conectan al servidor MCP de rnr-api por HTTP: basta declarar la URL y elegir autenticación (OAuth, o un API key de sesión de la REST como Bearer). Claude Code y Codex tienen guía propia; cualquier otro cliente MCP sigue los mismos tres datos: URL, autenticación y listado de herramientas.
+
+## Configuración general
+
+<CardGrid>
+  <Card title="URL del servidor" icon="link">
+    `https://api.runrunapi.com/mcp`, transport HTTP (no stdio).
+  </Card>
+  <Card title="Autenticación" icon="padlock">
+    OAuth con discovery RFC 9728, o `Authorization: Bearer <api-key>` de sesión de la REST.
+  </Card>
+  <Card title="Respuestas" icon="notes">
+    Objetos y listas en `structuredContent`; errores con `isError: true`.
+  </Card>
+</CardGrid>
+
+:::note
+La cuota es compartida entre REST y MCP: solo `tools/call` la descuenta. `collect_user_info` es la única herramienta que no es de lectura pura.
+:::
+
+## Elige tu agente
 
 <CardGrid>
   <a class="card-link" href="/agents/claude-code/">
