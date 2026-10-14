@@ -177,10 +177,22 @@ starlight-theme-select select {
   --entry-icon: url("/svgs/agents/codex.svg");
 }
 
+.sidebar-content a[data-icon="opencode"] {
+  --entry-icon: url("/svgs/agents/opencode.svg");
+}
+
 /* openai.svg usa `currentColor`: como background-image se resuelve a negro fijo
  * (invisible en tema oscuro). El shorthand limpia el background-image y la
  * máscara deja ver el color del texto. */
 .sidebar-content a[data-icon="openai"]::before {
+  background: currentColor;
+  -webkit-mask: var(--entry-icon) center / contain no-repeat;
+  mask: var(--entry-icon) center / contain no-repeat;
+}
+
+/* opencode.svg también usa `currentColor`: misma máscara que openai para que
+ * el icono herede el color del texto en ambos temas. */
+.sidebar-content a[data-icon="opencode"]::before {
   background: currentColor;
   -webkit-mask: var(--entry-icon) center / contain no-repeat;
   mask: var(--entry-icon) center / contain no-repeat;
@@ -219,4 +231,8 @@ starlight-theme-select select {
 .card-link:nth-child(4) .card {
   --sl-card-border: var(--sl-color-red);
   --sl-card-bg: var(--sl-color-red-low);
+}
+
+.sl-link-button.not-content.minimal {
+  margin-block: 0;
 }

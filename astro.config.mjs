@@ -49,8 +49,12 @@ export default defineConfig({
         alt: 'RunRunApi',
       },
       customCss: ["./src/styles/global.css"],
-      // Header propio: el tema Next no tiene nav en el header (la tenía lucode).
-      components: { Header: "./src/components/Header.astro" },
+      // Header y Footer propios: el tema Next no tiene nav en el header (la tenía
+      // lucode) y el footer agrega la nav del sitio y el copyright.
+      components: {
+        Header: "./src/components/Header.astro",
+        Footer: "./src/components/Footer.astro",
+      },
       sidebar: [
         { label: "Introducción", link: "/docs/" },
         { label: "Empezamos", link: "/get-started/" },
@@ -70,6 +74,7 @@ export default defineConfig({
             { label: "Introducción", link: "/agents/" },
             { label: "Claude Code", link: "/agents/claude-code/", attrs: { "data-icon": "claudecode" } },
             { label: "Codex", link: "/agents/codex/", attrs: { "data-icon": "codex" } },
+            { label: "OpenCode", link: "/agents/opencode/", attrs: { "data-icon": "opencode" } },
             { label: "Otros proveedores", link: "/agents/other-providers/" },
           ],
         },

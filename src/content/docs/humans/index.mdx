@@ -5,42 +5,25 @@ description: Conecta RunRunApi como conector MCP en ChatGPT, Claude o Jan AI.
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-Los chats humanos (ChatGPT, Claude, Jan AI) consultan RunRunApi como conector MCP remoto: al registrar el servidor, las herramientas quedan disponibles en lenguaje natural. En los tres casos necesitas tus credenciales de la plataforma ([www.runrunapi.com](https://www.runrunapi.com)), que emiten el token OAuth que usa el conector.
+Los chats humanos (ChatGPT, Claude, Jan AI) consultan RunRunApi como conector MCP remoto: al registrar el servidor, las herramientas quedan disponibles en lenguaje natural. solo en uno de los casos necesitas crdenciales <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>
 
 ## Configuración general
 
 <CardGrid>
-  <Card title="URL del conector" icon="link">
+  <Card title="Mcp y URL de conexion remota" icon="link">
     `https://api.runrunapi.com/mcp`, con transport HTTP remoto.
   </Card>
   <Card title="Credenciales" icon="padlock">
-    Se crean en la plataforma; el chat autoriza con OAuth y reutiliza el token.
+    Se crean en la plataforma; el chat autoriza con OAuth tu solo conectas.
   </Card>
   <Card title="Consulta en lenguaje natural" icon="comment">
-    Personas, empresas y contratación pública, sin escribir código.
+    Consulta datos de personas, empresas y mas, sin escribir código.
+  </Card>
+  <Card title="Compatible con varios proveedores de chat IA" icon="random">
+    Conecta el mcp con tu proveedor y empieza a consultar.
   </Card>
 </CardGrid>
 
 :::note
-Si el conector aparece sin herramientas, revisa que la URL sea exactamente `https://api.runrunapi.com/mcp`. Ante un `401`, repite la autorización: el token se reutiliza una vez otorgado.
+Si el conector aparece sin herramientas, revisa que la URL sea exactamente `https://api.runrunapi.com/mcp`. Ante un `401`, repite la autorización.
 :::
-
-## Elige tu chat
-
-<CardGrid>
-  <a class="card-link" href="/humans/chatgpt/">
-    <Card title="ChatGPT" icon="comment">
-      Registra RunRunApi como conector MCP y consulta los datos conversando.
-    </Card>
-  </a>
-  <a class="card-link" href="/humans/claude/">
-    <Card title="Claude" icon="comment-alt">
-      Añade el conector MCP remoto desde Claude web o de escritorio.
-    </Card>
-  </a>
-  <a class="card-link" href="/humans/jan/">
-    <Card title="Jan AI" icon="desktop">
-      Configura el servidor MCP de RunRunApi en el cliente de escritorio Jan.
-    </Card>
-  </a>
-</CardGrid>

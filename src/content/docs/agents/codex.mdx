@@ -1,0 +1,83 @@
+---
+title: Codex
+description: Cómo conectar Codex al MCP de RunRunApi.
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+Codex consume servidores MCP remotos declarados en su configuración. Antes de empezar decide tu autenticación: OAuth si tu versión de Codex lo soporta, o un API key de sesión de la REST como Bearer.
+
+## Guía de conexión
+
+<Steps>
+
+1. **Registra el servidor.**
+
+   Por comando:
+
+   ```sh
+   codex mcp add runrunapi --url https://api.runrunapi.com/mcp
+   ```
+
+   O por archivo, en `~/.codex/config.toml`:
+
+   ```toml
+   [mcp_servers.runrunapi]
+   url = "https://api.runrunapi.com/mcp"
+   ```
+
+2. **Autentica.**
+
+   Si tu versión soporta OAuth, inicia el flujo desde el CLI:
+
+   ```sh
+   codex mcp login runrunapi
+   ```
+
+   Si usas un API key de sesión como Bearer, obténlo en <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a> y guárdalo en una variable de entorno:
+
+   ```sh
+   export RUNRUNAPI_API_KEY="your_token"
+   ```
+
+   Luego regístralo con esa variable. Por comando:
+
+   ```sh
+   codex mcp add runrunapi --url https://api.runrunapi.com/mcp \
+     --bearer-token-env-var RUNRUNAPI_API_KEY
+   ```
+
+   O por archivo, en `~/.codex/config.toml`:
+
+   ```toml
+   [mcp_servers.runrunapi]
+   bearer_token_env_var = "RUNRUNAPI_API_KEY"
+   ```
+
+3. **Consulta.**
+
+   Con el servidor registrado, pide en lenguaje natural lo que necesites y Codex elige la herramienta:
+
+   ```text
+   Busca empresas que contengan "constructora"
+   Dame la ficha de la empresa con RUC 20512345678
+   Dame el detalle de la convocatoria C1234567
+   ```
+
+   El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).
+
+</Steps>
+
+## Notas de configuración
+
+<Aside type="note">
+`~/.codex/config.toml` es la configuración global de tu usuario: el servidor queda disponible en todos tus proyectos de Codex.
+</Aside>
+
+<Aside type="tip">
+Nunca pegues el token en el archivo: `bearer_token_env_var` solo guarda el nombre de la variable, el secreto queda en tu entorno.
+</Aside>
+
+<Aside type="caution">
+Si el servidor responde `401`, el token falta o expiró: regenera el API key o repite el flujo OAuth con `codex mcp login runrunapi`.
+</Aside>

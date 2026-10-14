@@ -1,0 +1,96 @@
+---
+/**
+ * Footer del sitio: override del Footer de Starlight (0.42.x) con la nav de
+ * enlaces del sitio y el copyright.
+ *
+ * Igual que `Header.astro`: los componentes se importan del paquete (y no de
+ * `virtual:starlight/...`) porque Starlight no publica tipos para los módulos
+ * virtuales y `astro check` falla. `Pagination` no usa virtuales internos, así
+ * que se importa tal cual; el resto del marcado es propio.
+ *
+ * IMPORTANTE: al reemplazar el componente, Astro deja de emitir sus estilos
+ * scoped (solo se emiten si el componente original se renderiza). Por eso el
+ * layout del footer (`flex-direction: column`) se re-declara abajo, copiado del
+ * original. Si se actualiza Starlight, comparar con el original.
+ */
+import { Icon } from '@astrojs/starlight/components';
+import Pagination from '@astrojs/starlight/components/Pagination.astro';
+
+import { ENV } from '../constants';
+
+type FooterLink = { label: string; link: string; external?: boolean };
+
+const footerLinks: FooterLink[] = [
+  { label: 'Guía', link: '/docs/' },
+  { label: 'Api Referencia', link: '/reference/' },
+  { label: 'Soporte', link: '/support/' },
+  // Sin fallback a propósito (ver src/constants.ts): si falta la variable, el `!` truena en el build.
+  { label: 'Plataforma', link: ENV.APPWEB_URL!, external: true },
+  { label: 'Blog', link: ENV.APPWEB_URL!, external: true },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="sl-flex">
+  <div class="site-links sl-flex">
+    <nav aria-label="Enlaces del sitio">
+      {
+        footerLinks.map(({ label, link, external }) => (
+          <a href={link}>
+            <span>{label}</span>
+            {external && <Icon name="external" />}
+          </a>
+        ))
+      }
+    </nav>
+    <p>© {year} RunRunApi</p>
+  </div>
+
+  <Pagination />
+</footer>
+
+<style>
+  @layer starlight.core {
+    /* Re-declarado del Footer original: el override no emite su <style> scoped. */
+    footer {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .site-links {
+      gap: 0.75rem 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--sl-color-hairline);
+      font-size: var(--sl-text-sm);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+    }
+
+    /* Enlaces con icono externo: alineados y con un pequeño espacio (igual que en el header). */
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--sl-color-gray-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--sl-color-white);
+    }
+
+    p {
+      margin: 0;
+      color: var(--sl-color-gray-3);
+    }
+  }
+</style>

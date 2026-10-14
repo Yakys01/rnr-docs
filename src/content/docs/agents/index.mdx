@@ -10,37 +10,21 @@ Los agentes de código se conectan al servidor MCP de RunRunApi por HTTP: basta 
 ## Configuración general
 
 <CardGrid>
-  <Card title="URL del servidor" icon="link">
+  <Card title="URL del servidor MCP" icon="link">
     `https://api.runrunapi.com/mcp`, transport HTTP (no stdio).
   </Card>
-  <Card title="Autenticación" icon="padlock">
-    OAuth con discovery RFC 9728, o `Authorization: Bearer <api-key>` de sesión de la REST.
+  <Card title="Autenticación por OAuth y Token" icon="padlock">
+    OAuth para el MCP con remote HTTP server y token Authorization.
   </Card>
-  <Card title="Respuestas" icon="notes">
-    Objetos y listas en `structuredContent`; errores con `isError: true`.
+  <Card title="Construye e implementa datos" icon="notes">
+    Construye tus soluciones personalizadas con nuestro mcp.
+  </Card>
+   <Card title="Completa archivos y consulta datos" icon="notes">
+    Trabajo con archivos y completa datos verificados. 
   </Card>
 </CardGrid>
 
 :::note
-La cuota es compartida entre REST y MCP: solo `tools/call` la descuenta. `collect_user_info` es la única herramienta que no es de lectura pura.
+La cuota es compartida entre REST y MCP: solo `tools/call` la descuenta para consultar las herramientas o datos que se necesiten.
 :::
 
-## Elige tu agente
-
-<CardGrid>
-  <a class="card-link" href="/agents/claude-code/">
-    <Card title="Claude Code" icon="window">
-      Conecta el MCP por HTTP con flujo OAuth, sin tokens manuales.
-    </Card>
-  </a>
-  <a class="card-link" href="/agents/codex/">
-    <Card title="Codex" icon="code-branch">
-      Declara el servidor MCP remoto en la configuración de Codex.
-    </Card>
-  </a>
-  <a class="card-link" href="/agents/other-providers/">
-    <Card title="Otros proveedores" icon="puzzle">
-      Cursor, Windsurf, Gemini CLI, Zed y cualquier cliente MCP sobre HTTP.
-    </Card>
-  </a>
-</CardGrid>

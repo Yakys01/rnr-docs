@@ -1,19 +1,28 @@
 ---
-title: RunRunApi Docs
+title: RunRunApi 
 description: Tu guia de implementacion de nuestras herramientas 
 template: splash
 hero:
+  tagline: Tu guia confiable en implementacion de Apis & MCP.
   image:
     html: '<img src="/banner.svg" width="450" alt="Ilustración de bienvenida a runrunapi">'
   actions:
     - text: Comenzar
       link: /docs/
-      icon: right-arrow
+      icon: rocket
+    - text: Ver en GitHub
+      link: https://github.com/astronaut/my-project
+      icon: external
+      variant: minimal
+      attrs:
+        rel: me
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-<CardGrid>
+<h3>Siguientes pasos</h3> 
+
+<CardGrid stagger>
   <a class="card-link" href="/get-started/">
     <Card title="Empezamos" icon="rocket">
       Crea tu credencial o conecta con nuestro MCP: autenticación, modulos y mas.

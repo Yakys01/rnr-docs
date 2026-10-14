@@ -1,0 +1,93 @@
+---
+title: Claude Code
+description: Cómo conectar Claude Code al MCP de RunRunApi.
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+Claude Code habla MCP sobre HTTP y soporta el flujo OAuth de la plataforma, así que no necesita tokens manuales: al invocar una herramienta por primera vez, pide autorización.
+
+## Guía de conexión
+
+<Steps>
+
+1. **Registra el servidor.**
+
+   Por comando, dentro de una sesión de Claude Code:
+
+   ```sh
+   claude mcp add --transport http runrunapi https://api.runrunapi.com/mcp
+   ```
+
+   O por archivo, creando `.mcp.json` en la raíz del proyecto:
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "type": "http",
+         "url": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+2. **Autentica.**
+
+   La primera vez que invoques una herramienta, Claude Code abre el flujo OAuth de la plataforma. Estos comandos te ayudan a revisar el estado:
+
+   ```text
+   /mcp        # muestra los servidores conectados y su estado
+   /mcp auth   # fuerza la reautenticación si el token expiró
+   ```
+
+   Si prefieres un API key de sesión en lugar de OAuth (se obtiene en <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>), regístralo con el header Bearer. Por comando:
+
+   ```sh
+   claude mcp add --transport http runrunapi https://api.runrunapi.com/mcp \
+     --header "Authorization: Bearer your_token"
+   ```
+
+   O por archivo, en `.mcp.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "type": "http",
+         "url": "https://api.runrunapi.com/mcp",
+         "headers": {
+           "Authorization": "Bearer your_token"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Consulta.**
+
+   Con el servidor conectado, pide en lenguaje natural lo que necesites y Claude Code elige la herramienta:
+
+   ```text
+   Busca empresas que contengan "constructora" y dame su estado SUNAT
+   Lista los contratos del RUC 20512345678 en 2024
+   Recolecta de nuevo la ficha del DNI 12345678
+   ```
+
+   El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).
+
+</Steps>
+
+## Notas de configuración
+
+<Aside type="note">
+El comando `claude mcp add` registra el servidor solo en el proyecto actual. Para tenerlo en todos tus proyectos usa `--scope user`, o `--scope project` para escribirlo en `.mcp.json`.
+</Aside>
+
+<Aside type="tip">
+El archivo `.mcp.json` se puede versionar: quien clone el repo queda conectado con la misma configuración, sin repetir el comando.
+</Aside>
+
+<Aside type="caution">
+Si una llamada responde `401` o el servidor aparece caído, corre `/mcp auth` para rehacer el flujo OAuth.
+</Aside>

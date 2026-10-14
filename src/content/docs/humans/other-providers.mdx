@@ -1,0 +1,36 @@
+---
+title: Otros proveedores
+description: Cómo conectar cualquier chat compatible con MCP sobre HTTP a RunRunApi.
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+Cualquier cliente que hable MCP sobre HTTP se conecta a RunRunApi con los mismos tres datos: URL, autenticación y listado de herramientas.
+
+## Guía de conexión
+
+<Steps>
+
+1. **Registra el servidor.** Busca la opción para agregar un servidor o conector MCP en tu cliente y pega la URL:
+
+   ```text
+   https://api.runrunapi.com/mcp
+   ```
+
+2. **Autentica.** Con solo la URL, el cliente negocia OAuth automáticamente: al recibir `401` hace el discovery y abre el navegador para autorizar. Para usar un token, agrega el header `Authorization` con un token de <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>:
+
+   ```text
+   Authorization: Bearer your_token
+   ```
+
+3. **Consulta.** Pide en lenguaje natural; el cliente descubre las herramientas y las invoca por ti:
+
+   ```text
+   ¿Qué proyectos de construcción hay?
+   Muéstrame las empresas con RUC 20512345678.
+   ¿Hay convocatorias nuevas?
+   ```
+
+</Steps>
+
+El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

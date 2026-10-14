@@ -3,46 +3,32 @@ title: Introducción
 description: Presentación de RunRunApi — qué expone, para quién es y por qué usarlo.
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Card, CardGrid, LinkButton } from "@astrojs/starlight/components";
 
-RunRunApi expone información de personas, empresas y contratación pública del Perú (derivada de SUNAT y OSCE) a través de dos interfaces:
-
-- **REST** (`/session`, `/user/*`, `/company/*`, `/contract/*`, …), protegida con tokens de acceso de [www.runrunapi.com](https://www.runrunapi.com).
-- **MCP** (`/mcp`), un servidor Model Context Protocol abierto a cualquier cliente compatible: chats humanos (ChatGPT, Claude), agentes de código (Claude Code, Codex) y otros clientes IA.
+RunRunApi expone información de usuarios, empresas y contratación pública del Perú (derivada de SUNAT y OSCE) tanto para desarrolladores como para profesionales con un conector MCP a retrocompatible con tus agentes de chat IA populares:
 
 <CardGrid>
-  <Card title="Dos interfaces, un mismo núcleo" icon="server">
-    La misma información por HTTP REST o por MCP, servida por api.runrunapi.com.
+  <Card title="Para desarrolladores" icon="server">
+    Apis Rest de consultas de usuarios y empresas flexible para implementaciones a medida.
+
+    <LinkButton href="/reference/" variant="minimal" icon="right-arrow">Apis Referencia</LinkButton>
   </Card>
-  <Card title="Hecho para IA" icon="puzzle">
-    16 herramientas MCP listas para chats humanos y agentes de código, sin código propio.
-  </Card>
-  <Card title="Consulta segura" icon="approve-check">
-    Herramientas de lectura pura; solo `collect_user_info` dispara recolección y persiste cambios.
-  </Card>
-  <Card title="Datos del Perú" icon="database">
-    Personas, empresas y contratación pública: SUNAT y OSCE en un solo lugar.
+  <Card title="Para profesionales" icon="puzzle">
+    Herramientas MCP listas para chats humanos y agentes IA, con conexion remota.
+
+    <LinkButton href="/mcp/get-users/" variant="minimal" icon="right-arrow">MCP Referencia</LinkButton>
   </Card>
 </CardGrid>
 
 ## Qué puedes consultar
 
-- **Personas**: ficha por número de documento (DNI), con recolección bajo demanda para refrescar datos desactualizados.
-- **Empresas**: ficha SUNAT (razón social, estado y condición, dirección con ubigeo), historial anual, contratos, adjudicaciones, convocatorias, postulaciones y pronunciamientos.
-- **Rankings**: empresas con deuda coactiva SUNAT y empresas con más penalidades (PAC/OSCE).
-- **Contratos y convocatorias**: detalle completo de un proceso o contrato por código OSCE.
-- **Ubicaciones**: departamento, provincia y distrito a partir de un código ubigeo.
-
-## El servidor MCP
-
-El servidor MCP de RunRunApi registra **16 herramientas** sobre los mismos datos que la REST. Todas las herramientas son de consulta; solo `collect_user_info` dispara recolección externa y persiste cambios.
-
-| Grupo | Herramientas |
+| Módulo | Qué incluye |
 |---|---|
-| Usuarios | `get_user_info`, `collect_user_info` |
-| Empresas | `get_company_info`, `get_company_status`, `get_company_track`, `get_company_contracts`, `get_company_directs`, `get_company_adjudications`, `get_company_convocatories`, `get_company_bidders`, `get_company_pronouncements`, `search_companies`, `get_companies_with_debt`, `get_companies_with_penalties` |
-| Contratos / Convocatorias | `get_convocatory`, `get_contract` |
-| Ubicaciones | `get_location` |
+| **Usuarios** | Consulta datos de personas por DNI:<br />• Ficha personal (nombres, fecha de nacimiento, ubigeo)<br />• Recolección bajo demanda para refrescar datos desactualizados |
+| **Empresas** | Consulta datos de empresas por RUC:<br />• Ficha SUNAT (razón social, estado y condición, dirección con ubigeo)<br />• Estado tributario: sanciones o inhabilitaciones, deuda coactiva<br />• Historial anual: contratos, convocatorias, adjudicaciones y postulaciones<br />• Contratos, contrataciones directas, adjudicaciones, convocatorias, postulaciones y pronunciamientos |
+| **Rankings** | Descubre empresas por deuda o penalidades:<br />• Empresas con deuda coactiva SUNAT<br />• Empresas con más penalidades (PAC/OSCE) |
+| **Contratos y convocatorias** | Detalle completo por código OSCE:<br />• Convocatorias o invitaciones: cabecera, items, adjudicaciones, contratos y postulaciones<br />• Contratos: fechas, prórrogas, adicionales y reducciones |
+| **Ubicaciones** | Resuelve códigos ubigeo:<br />• Departamento, provincia y distrito |
 
 ## Por dónde empezar
 

@@ -1,0 +1,44 @@
+---
+title: ChatGPT
+description: Cómo usar RunRunApi desde ChatGPT con un conector MCP.
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+ChatGPT puede consultar los datos de RunRunApi en lenguaje natural si lo registras como conector MCP. Antes de empezar necesitas tus credenciales de la plataforma (<a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>), que emite el token OAuth que ChatGPT usará.
+
+## Conectar el servidor
+
+<Steps>
+
+1. Abre **Complementos** en la barra lateral (o *Settings → Apps & Connectors*).
+
+   ![Barra lateral de ChatGPT con la opción Complementos resaltada](/imgs/chatgpt/step1.png)
+
+2. Clic en **Agregar** (arriba a la derecha).
+
+   ![Página Complementos con el botón Agregar resaltado](/imgs/chatgpt/step2.png)
+
+3. Elige **Agregar servidor MCP personalizado**.
+
+   ![Menú de Agregar con la opción Agregar servidor MCP personalizado resaltada](/imgs/chatgpt/step3.png)
+
+4. Pega la URL `https://api.runrunapi.com/mcp` (transport **HTTP**) y autoriza con OAuth: ChatGPT sigue el challenge `401` + discovery RFC 9728, abre el login de la plataforma y reusa el token.
+
+5. Activa el conector en la conversación.
+
+</Steps>
+
+## Qué puedes preguntar
+
+Con el conector activo, consulta en lenguaje natural, por ejemplo:
+
+- *"Dame la ficha de la empresa con RUC 20512345678"*
+- *"Busca empresas que contengan 'constructora' y dime su estado SUNAT"*
+- *"¿Qué contratos suscribió la empresa X en 2024?"*
+
+## Si algo falla
+
+- Si el conector aparece sin herramientas, revisa que la URL sea exactamente `https://api.runrunapi.com/mcp`.
+- Si responde `401`, repite el flujo de autorización: ChatGPT reutiliza el token una vez otorgado.
+- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

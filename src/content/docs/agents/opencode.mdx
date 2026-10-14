@@ -1,0 +1,142 @@
+---
+title: OpenCode
+description: Cómo conectar OpenCode al MCP de RunRunApi.
+---
+
+import { Aside, Steps, TabItem, Tabs } from "@astrojs/starlight/components";
+
+OpenCode consume servidores MCP remotos declarados en su configuración. La forma **v2** los agrupa bajo `mcp.servers` (la recomendada); la forma **v1** los declara directo bajo `mcp` y sigue funcionando en v2. Antes de empezar decide tu autenticación: OAuth (el valor por defecto para servidores remotos) o un API key de sesión de la REST como Bearer.
+
+## Guía de conexión
+
+<Steps>
+
+1. **Registra el servidor.**
+
+   Por comando (v2):
+
+   ```sh
+   opencode mcp add runrunapi --url https://api.runrunapi.com/mcp
+   ```
+
+   O por archivo, en `opencode.json` del proyecto (o en `~/.config/opencode/opencode.json` para todos tus proyectos):
+
+   <Tabs>
+   <TabItem label="v2 (recomendado)">
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "servers": {
+         "runrunapi": {
+           "type": "remote",
+           "url": "https://api.runrunapi.com/mcp"
+         }
+       }
+     }
+   }
+   ```
+
+   </TabItem>
+   <TabItem label="v1">
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "runrunapi": {
+         "type": "remote",
+         "url": "https://api.runrunapi.com/mcp",
+         "enabled": true
+       }
+     }
+   }
+   ```
+
+   </TabItem>
+   </Tabs>
+
+2. **Autentica.**
+
+   Con OAuth, verifica el estado con `opencode mcp list` y, si pide autorización, ejecuta `opencode mcp auth runrunapi` o dentro de OpenCode abre `/mcps`, elige el servidor y firma la autorización en el navegador.
+
+   Si usas un API key de sesión como Bearer, obténlo en <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a> y guárdalo en una variable de entorno:
+
+   ```sh
+   export RUNRUNAPI_API_KEY="your_token"
+   ```
+
+   Luego desactiva OAuth y agrega el header en `opencode.json`:
+
+   <Tabs>
+   <TabItem label="v2 (recomendado)">
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "servers": {
+         "runrunapi": {
+           "type": "remote",
+           "url": "https://api.runrunapi.com/mcp",
+           "oauth": false,
+           "headers": {
+             "Authorization": "Bearer {env:RUNRUNAPI_API_KEY}"
+           }
+         }
+       }
+     }
+   }
+   ```
+
+   </TabItem>
+   <TabItem label="v1">
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "runrunapi": {
+         "type": "remote",
+         "url": "https://api.runrunapi.com/mcp",
+         "enabled": true,
+         "oauth": false,
+         "headers": {
+           "Authorization": "Bearer {env:RUNRUNAPI_API_KEY}"
+         }
+       }
+     }
+   }
+   ```
+
+   </TabItem>
+   </Tabs>
+
+3. **Consulta.**
+
+   Con el servidor conectado, pide en lenguaje natural lo que necesites y OpenCode elige la herramienta:
+
+   ```text
+   Busca empresas que contengan "constructora"
+   Dame la ficha de la empresa con RUC 20512345678
+   Dame el detalle de la convocatoria C1234567
+   ```
+
+   El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).
+
+</Steps>
+
+## Notas de configuración
+
+<Aside type="note">
+Sin `--global`, el comando escribe el servidor en la configuración del proyecto actual; con `--global` queda en `~/.config/opencode/opencode.json` y se aplica a todos tus proyectos.
+</Aside>
+
+<Aside type="tip">
+Usa `{env:RUNRUNAPI_API_KEY}` en lugar del token: OpenCode sustituye el valor desde tu entorno y el secreto no queda en el archivo (`$RUNRUNAPI_API_KEY` no se expande en JSON).
+</Aside>
+
+<Aside type="caution">
+Si el servidor responde `401`, el token falta o expiró: revisa que la variable de entorno esté exportada, o ejecuta `opencode mcp logout runrunapi` y repite la autorización con `/mcps`.
+</Aside>

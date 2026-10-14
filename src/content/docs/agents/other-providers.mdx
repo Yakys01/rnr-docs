@@ -1,0 +1,146 @@
+---
+title: Otros proveedores
+description: Cómo conectar cualquier cliente MCP sobre HTTP a RunRunApi.
+---
+
+import { Steps, TabItem, Tabs } from "@astrojs/starlight/components";
+
+Cualquier cliente que hable MCP sobre HTTP se conecta a RunRunApi con los mismos tres datos: URL, autenticación y listado de herramientas. Esto cubre Cursor, Windsurf, VS Code, Gemini CLI, Zed y clientes propios construidos con `@modelcontextprotocol/sdk`.
+
+## Conexión base
+
+1. **URL**: `https://api.runrunapi.com/mcp`.
+2. **Auth**: OAuth (RFC 8414/9728 via el metadata) o Bearer de sesión (API key REST).
+3. **Herramientas**: se listan con `tools/list`; los resultados llegan en `structuredContent` (listas bajo `items`) o en texto JSON en clientes legacy.
+4. **Idioma**: los datos y descripciones vienen en español; los identificadores de herramienta (en inglés, ver [referencia abajo](/mcp/get-users/)) son estables.
+
+## Guía de conexión
+
+<Steps>
+
+1. **Registra el servidor.** Agrega el endpoint remoto en la configuración de tu cliente; cada uno usa su propio archivo y su propia sintaxis (solo la URL; OAuth es el valor por defecto):
+
+   <Tabs>
+   <TabItem label="Cursor">
+
+   En `~/.cursor/mcp.json` (o `.cursor/mcp.json` del proyecto):
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "url": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+   Cursor expande `${env:VAR}` en la URL y los headers.
+
+   </TabItem>
+   <TabItem label="Windsurf (Cascade)">
+
+   En el `mcp_config.json` que abre el panel de MCPs de Cascade:
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "serverUrl": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+   Windsurf también acepta `url` y expande `${env:VAR}`.
+
+   </TabItem>
+   <TabItem label="VS Code">
+
+   En `.vscode/mcp.json` del workspace:
+
+   ```json
+   {
+     "servers": {
+       "runrunapi": {
+         "type": "http",
+         "url": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+   El formato portable `.mcp.json` (con `mcpServers`) también sirve.
+
+   </TabItem>
+   <TabItem label="Gemini CLI">
+
+   En `~/.gemini/settings.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "httpUrl": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+   `httpUrl` es para HTTP streaming; `url` es solo para SSE.
+
+   </TabItem>
+   <TabItem label="Zed">
+
+   En `settings.json` (o desde Settings → AI → MCP Servers):
+
+   ```json
+   {
+     "context_servers": {
+       "runrunapi": {
+         "url": "https://api.runrunapi.com/mcp"
+       }
+     }
+   }
+   ```
+
+   Sin header `Authorization`, Zed lanza el flujo OAuth.
+
+   </TabItem>
+   </Tabs>
+
+2. **Autentica.** Con solo la URL el cliente negocia OAuth automáticamente: al recibir `401` hace el discovery RFC 9728 y abre el navegador para autorizar. Para usar un API key de sesión agrega el header `Authorization` con un token de <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>, con la sintaxis de tu cliente (paso 1):
+
+   ```json
+   {
+     "mcpServers": {
+       "runrunapi": {
+         "url": "https://api.runrunapi.com/mcp",
+         "headers": {
+           "Authorization": "Bearer your_token"
+         }
+       }
+     }
+   }
+   ```
+
+   Si tu cliente soporta sustitución por variables de entorno, úsala en vez de pegar el token en texto plano.
+
+3. **Consulta.** Pide en lenguaje natural; el cliente descubre las herramientas con `tools/list` y las invoca por ti:
+
+   ```text
+   ¿Cuántos proyectos de construcción tengo registrados?
+   Muéstrame las empresas con RUC que empiecen con 205.
+   ¿Qué convocatorias nuevas salieron esta semana?
+   ```
+
+</Steps>
+
+## Qué verificar al integrar
+
+- Que tu cliente use transport HTTP (no stdio) contra la URL de arriba.
+- Que complete el challenge `401` + discovery RFC 9728 si usa OAuth, o que envíe `Authorization: Bearer <api-key>` si usa API key de sesión.
+- Que lea `structuredContent` para consumir los objetos y listas directamente.
+- Que trate los errores JSON-RPC con `isError: true` y el mensaje en texto.
+
+El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

@@ -3,32 +3,67 @@ title: Empezamos
 description: Cómo conectarte al MCP de RunRunApi — endpoint, autenticación, cuota y paginación.
 ---
 
-Antes de conectarte necesitas dos cosas: la **URL del servidor MCP** y **credenciales válidas**. El flujo típico es:
+Esta guia te ayudara a introducirte de manera general en las integraciones tanto para profesionales que desen integrar nuestro mcp en su agente de IA favorito, y tambien para desarrolladores que buscan soluciones personalizadas.
 
-1. Obtén tus credenciales en la plataforma: [www.runrunapi.com](https://www.runrunapi.com).
-2. Elige tu cliente: un [chat humano](/humans/chatgpt/) o un [agente de código](/agents/claude-code/).
-3. Registra el servidor MCP con la URL de abajo y autentícate.
-4. Prueba con `tools/list` para ver las 16 herramientas disponibles.
+## Profesionales
 
-## Endpoint
+Para integrar las consultas en tus agentes IA favoritos hay varias opciones desde propietarias y abiertas (open source).
 
-- Servidor MCP: `POST https://api.runrunapi.com/mcp` (JSON-RPC, transport HTTP).
-- Health check público: `GET /health/mcp`.
-- Discovery OAuth (RFC 9728): `GET /.well-known/oauth-protected-resource/mcp`.
+1. Crea tu cuenta en <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a> no hace falta crear credenciales.
+2. Si usas chats como [ChatGpt](/humans/chatgpt/) o [Claude](/humans/claude/) puedes ir a  directamente a la guia.
+3. Con la guia, dicha integracion es por OAuth. 
 
-## Autenticación
+Si deseas usar un cliente abierto que ejecuta modelos en local puedes usar [Jan IA (recomendado)](/humans/jan) u otros proveedores locales puedes consultar en [otros proveedores](/humans/other-providers/).
 
-El MCP es un *resource server* OAuth. Acepta dos Bearer, y el cupo es compartido entre REST y MCP:
+## Desarrolladores
 
-1. **JWT OAuth** (camino principal): tokens emitidos por la plataforma ([www.runrunapi.com](https://www.runrunapi.com)); con ellos accedés a los datos de `api.runrunapi.com`.
-2. **API key REST** (retrocompatible): un Bearer de sesión válido de la API también opera `/mcp`.
+Para implementaciones Apis Rest:
 
-Si el token falta o es inválido, el endpoint responde con el challenge `WWW-Authenticate` apuntando al metadata OAuth.
+1. Obtén tus credenciales en la plataforma: <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>.
+2. Prueba tu credencial con:
+```ts
+curl 'https://api.runrunapi.com/session/check?token=your_token'
+```
+2. Opcionalmente puedes probar tu token en [Apis Referencia](/reference) .
+3. Consulta todos los endpoints en [Apis Referencia](/reference) .
 
-## Cuota y paginación
+Para integraciones MCP en chat personalizados:
 
-- Solo `tools/call` descuenta cuota; el handshake y `tools/list` no consumen. Exceder el cupo responde HTTP 429 con error JSON-RPC.
-- Todas las herramientas de listado comparten el mismo convenio de paginación y fechas:
+1. Obtén tus credenciales en la plataforma: <a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>.
+2. Consulta datos de nuestro mcp con la siguiente estructura:.
+```ts
+const response = await fetch("https://api.runrunapi.com/mcp", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json, text/event-stream",
+      authorization: `Bearer ${your_token}`,
+    },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, "tools/list" }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`MCP ${response.status}: ${await response.text()}`);
+  }
+
+  // La respuesta SSE trae el JSON-RPC en la línea `data:`.
+  const line = (await response.text())
+    .split("\n")
+    .find((row) => row.startsWith("data:"));
+  if (!line) throw new Error("MCP: respuesta SSE sin data");
+
+  return JSON.parse(line.slice(5));
+```
+3. Para mas informacion puedes consultar [MCP Referencia](/mcp).
+
+
+**Nota:** El token obtenido en credenciales es compatible tanto para Apis Rest como para MCP.
+
+
+#### Consideranciones tecnicas
+
+- Solo `tools/call` descuenta cuota; el handshake y `tools/list` no consumen. Exceder los limites de tu plan o recarga responde HTTP 429 con error.
+- Hay operacienes que realizan listado estas comparten el mismo convenio de paginación y fechas:
 
 | Campo | Tipo | Descripción |
 |---|---|---|

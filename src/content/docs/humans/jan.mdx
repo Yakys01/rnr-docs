@@ -1,0 +1,41 @@
+---
+title: Jania
+description: Cómo usar RunRunApi desde Jania con un servidor MCP remoto.
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+Jania se conecta al MCP de RunRunApi como servidor remoto. Antes de empezar necesitas tus credenciales de la plataforma (<a href="https://www.runrunapi.com" target="_blank" rel="noopener noreferrer">RunRunApi</a>), o un API key de sesión de la REST si Jania no soporta OAuth.
+
+## Conectar el servidor
+
+<Steps>
+
+1. Abre **Configuración** en la barra lateral.
+
+   ![Barra lateral de Jan con la opción Configuración resaltada](/imgs/jan-ia/step1.png)
+
+2. Entra a **Servidores MCP** (sección Integraciones).
+
+   ![Configuración de Jan con la sección Servidores MCP resaltada](/imgs/jan-ia/step2.png)
+
+3. Clic en **Agregar servidor MCP** (arriba a la derecha).
+
+   ![Botón Agregar servidor MCP en la esquina superior derecha](/imgs/jan-ia/step3.png)
+
+4. Completa el formulario —nombre (por ejemplo *RunRun Consultas*), transport **HTTP**, URL `https://api.runrunapi.com/mcp` y header `Authorization` con `Bearer your_token`— y guarda.
+
+   ![Formulario Agregar servidor MCP con transport HTTP, la URL y el header Authorization](/imgs/jan-ia/step4.png)
+
+</Steps>
+
+## Qué puedes preguntar
+
+- *"Dame la ficha de la persona con DNI 12345678"*
+- *"Busca empresas que contengan 'constructora'"*
+- *"Dame el detalle de la convocatoria C1234567"*
+
+## Si algo falla
+
+- Si Jania no lista herramientas, revisa que la URL sea exactamente `https://api.runrunapi.com/mcp` y que el Bearer sea válido.
+- El detalle de cada herramienta (entradas y salidas) está en la [MCP Referencia](/mcp/get-users/).

@@ -23,6 +23,7 @@ const apiServer = ENV.APPAPI_URL;
       sources: [{ url: "/openapi.json", agent: { disabled: true } }],
       servers: apiServer ? [{ url: apiServer }] : undefined,
       hideDarkModeToggle: true,
+      showDeveloperTools: 'never',
       theme: "saturn", 
       layout: "classic", 
       defaultOpenAllTags: true,
@@ -44,5 +45,40 @@ const apiServer = ENV.APPAPI_URL;
 
   .content-panel:has(.scalar-app) > .sl-container {
     max-width: none;
+  }
+
+  /* Sin footer en la referencia: es Scalar a pantalla completa, no un doc.
+   * El `>` directo evita tocar un <footer> interno de Scalar; este CSS solo se
+   * inyecta en esta página, así que no hace falta acotarlo con `body:has()`
+   * (que además llegaría tarde: Scalar monta en cliente). */
+  .content-panel > .sl-container > footer {
+    display: none;
+  }
+
+  /* Alinea el header con la columna de contenido de Scalar (layout classic).
+   * Esos números vienen del CSS de Scalar: en desktop su columna mide
+   * min(1420px, 100% - 120px) centrada y en angosto el contenido lleva 24px
+   * a cada lado; replicamos lo mismo para que los bordes cuadren. */
+  body:has(.scalar-app) header.header {
+    padding-inline: 0;
+  }
+
+  body:has(.scalar-app) header.header > .header {
+    width: min(1420px, 100% - 120px);
+    margin-inline: auto;
+  }
+
+  /* Con el cliente API de Scalar abierto, su overlay fixed queda por debajo
+   * del header fijo de Starlight (z-index 10) y este lo tapa. Mientras Scalar
+   * marque .scalar-client--open en su container, el header baja a 0; sin la
+   * clase recupera su valor normal de Starlight (--sl-z-index-navbar). */
+  body:has(.scalar-container.scalar-client--open) header.header {
+    z-index: 0;
+  }
+
+  @media (max-width: 900px) {
+    body:has(.scalar-app) header.header > .header {
+      width: calc(100% - 3rem);
+    }
   }
 </style>
