@@ -1,6 +1,7 @@
 import starlight from "@astrojs/starlight";
 import { defineConfig, passthroughImageService } from "astro/config";
 import starlightContextualMenu from "starlight-contextual-menu";
+import starlightImageZoom from "starlight-image-zoom";
 import starlightLlmsTxt from "starlight-llms-txt";
 import starlightThemeNext from "starlight-theme-next";
 import lottie from "astro-integration-lottie";
@@ -97,6 +98,8 @@ export default defineConfig({
         starlightContextualMenu({
           actions: ["copy", "view", "chatgpt", "claude"],
         }),
+        // Zoom de imágenes: clic para ampliarlas en un diálogo, con el alt como pie.
+        starlightImageZoom(),
         // Genera /llms.txt, /llms-full.txt y /llms-small.txt para agentes IA.
         starlightLlmsTxt(),
       ],

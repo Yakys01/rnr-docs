@@ -16,17 +16,6 @@ Herramientas del dominio personas. Entrada común: `document` (string, solo díg
 { "document": "12345678" }
 ```
 
-## collect_user_info — "Recolectar persona"
-
-- **Descripción**: vuelve a recolectar los datos de una persona desde los proveedores externos y devuelve el registro actualizado.
-- **Input**: `document` (string, solo dígitos).
-- **Output**: objeto con la ficha actualizada.
-- **Ojo**: no es de lectura pura — dispara recolección externa y persiste cambios.
-
-```json
-{ "document": "12345678" }
-```
-
 ## Cuál usar
 
 Obtén el DNI de la consulta, no lo inventes. Para refrescar datos desactualizados usa `collect_user_info`; para solo leer, `get_user_info`.
