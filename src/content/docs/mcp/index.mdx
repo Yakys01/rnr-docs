@@ -1,16 +1,16 @@
 ---
 title: Referencia MCP
-description: Herramientas MCP de RunRunApi — personas, empresas y convocatorias.
+description: Conexión y herramientas MCP de RunRunApi — personas, empresas, rankings, convocatorias y ubicaciones.
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Card, CardGrid, Tabs, TabItem } from "@astrojs/starlight/components";
 
-El servidor MCP de RunRunApi expone las mismas consultas que la REST sobre los datos de api.runrunapi.com. Entrada común: el identificador del recurso (número de documento o RUC) más paginación (`limit`/`offset`) y filtros de fecha opcionales.
+El servidor MCP de RunRunApi expone las mismas consultas que la REST sobre los datos de api.runrunapi.com: fichas de personas y empresas, listados por RUC, rankings, convocatorias y ubicaciones. Abajo tienes la conexión y ejemplos de uso; el convenio de paginación, fechas y salidas está en [Empezamos](/get-started/).
 
 <CardGrid>
   <a class="card-link" href="/mcp/get-users/">
     <Card title="Obtener usuarios" icon="magnifier">
-      Fichas de personas por DNI: get_user_info y collect_user_info.
+      Fichas de personas por DNI: get_user_info.
     </Card>
   </a>
   <a class="card-link" href="/mcp/get-companies/">
@@ -24,3 +24,102 @@ El servidor MCP de RunRunApi expone las mismas consultas que la REST sobre los d
     </Card>
   </a>
 </CardGrid>
+
+## Conexión
+
+- **Endpoint**: `https://api.runrunapi.com/mcp` por HTTP (Streamable HTTP). El server es **stateless**: cada petición es independiente, con o sin `initialize` previo.
+- **Autenticación**: cabecera `authorization: Bearer <token>` con el token de tu cuenta (el mismo de la REST, también válido para OAuth).
+- **Cabeceras**: `content-type: application/json` y `accept: application/json, text/event-stream` son obligatorias; si falta alguna, responde `406`.
+- **Cuota**: `tools/list` no descuenta; cada `tools/call` sí, y sin saldo responde `429`.
+
+Para conectar desde un cliente ya existente: [chats humanos](/humans/) o [agentes IA](/agents/).
+
+## Uso directo
+
+<Tabs>
+<TabItem label="Nativo (fetch)">
+
+Sin dependencias: un helper sobre `fetch` y tres llamadas.
+
+```ts
+const BASE = "https://api.runrunapi.com";
+const TOKEN = process.env.RUNRUNAPI_API_KEY;
+
+async function mcp(method: string, params: unknown, id: number) {
+  const res = await fetch(`${BASE}/mcp`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json, text/event-stream", // ambas obligatorias → 406 si falta una
+      authorization: `Bearer ${TOKEN}`, // token de sesión u OAuth
+    },
+    body: JSON.stringify({ jsonrpc: "2.0", id, method, params }),
+  });
+
+  const text = await res.text();
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
+
+  // El server es stateless: devuelve un único evento SSE en la línea "data:"
+  const line = text.split("\n").find((l) => l.startsWith("data: "));
+  return line ? JSON.parse(line.slice(6)) : undefined; // 202 → sin body
+}
+```
+
+```ts
+// 1. initialize — opcional: el server es stateless, pero los clientes estrictos lo repiten
+await mcp("initialize", {
+  protocolVersion: "2025-06-18",
+  capabilities: {},
+  clientInfo: { name: "mi-cliente", version: "1.0.0" },
+}, 1);
+
+// 2. tools/list — no consume cuota
+const lista = await mcp("tools/list", {}, 2);
+console.log(lista.result.tools);
+
+// 3. tools/call — consume cuota (429 sin saldo)
+const call = await mcp("tools/call", {
+  name: "get_company_info",
+  arguments: { ruc: "20512345678" },
+}, 3);
+
+const datos = call.result.structuredContent ?? JSON.parse(call.result.content[0].text);
+```
+
+</TabItem>
+<TabItem label="SDK oficial (TypeScript)">
+
+Con el [SDK de MCP](https://github.com/modelcontextprotocol/typescript-sdk): hace el `initialize` y maneja el SSE por ti.
+
+```sh
+npm install @modelcontextprotocol/client
+```
+
+```ts
+import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
+
+const TOKEN = process.env.RUNRUNAPI_API_KEY;
+const client = new Client({ name: "mi-cliente", version: "1.0.0" });
+const transport = new StreamableHTTPClientTransport(
+  new URL("https://api.runrunapi.com/mcp"),
+  { requestInit: { headers: { authorization: `Bearer ${TOKEN}` } } }, // igual que en fetch
+);
+
+await client.connect(transport); // aquí corre el initialize
+
+const { tools } = await client.listTools(); // sin cuota
+console.log(tools);
+
+const res = await client.callTool({ // consume cuota
+  name: "get_company_info",
+  arguments: { ruc: "20512345678" },
+});
+console.log(res.structuredContent ?? res.content);
+
+await client.close();
+```
+
+</TabItem>
+</Tabs>
+
+En `tools/call`, el resultado va en `result.structuredContent`; si un tool no declara salida estructurada, el JSON llega como texto en `content[0].text`.

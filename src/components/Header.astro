@@ -31,7 +31,7 @@ const navLinks: NavLink[] = [
   { label: 'Api Referencia', link: '/reference/' },
   // Sin fallback a propósito (ver src/constants.ts): si falta la variable, el `!` truena en el build.
   { label: 'Plataforma', link: ENV.APPWEB_URL!, external: true },
-  { label: 'Blog', link: ENV.APPWEB_URL!, external: true },
+  { label: 'Blog', link: `${ENV.APPWEB_URL}/blog`, external: true },
 ];
 ---
 

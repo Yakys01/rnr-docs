@@ -3,12 +3,20 @@ title: Obtener convocatorias
 description: Herramientas MCP por código OSCE — get_convocatory, get_contract y get_location.
 ---
 
-Herramientas por código OSCE, con paginación (`limit`/`offset`) y filtros opcionales de fecha.
+Herramientas por código OSCE, con paginación (`limit`/`offset`) y filtros opcionales de fecha (ver [Empezamos](/get-started/)).
+
+| Herramienta | Entrada | Salida | Qué devuelve |
+|---|---|---|---|
+| `get_convocatory` | `code` + fecha | ficha | Detalle completo de una convocatoria o invitación. |
+| `get_contract` | `code` + fecha | ficha | Contrato: fechas, prórrogas, adicionales y reducciones. |
+| `get_location` | `ubigeo` | ficha | Departamento, provincia y distrito. |
 
 ## get_convocatory — "Consultar convocatoria"
 
 - **Descripción**: obtiene el detalle completo de una convocatoria o invitación por código: cabecera, items, adjudicaciones, contratos, contratos directos, postulaciones y pronunciamientos. Vista integral del proceso; un proceso puede anularse, retrotraerse o postergarse, así que puede reflejar datos incompletos o nulos según lo publicado.
-- **Input**: `code` (string, código de convocatoria OSCE) + paginación + fecha.
+- **Input**: `code` (string, código de convocatoria OSCE) + paginación + fecha (opcional).
+- **Output**: ficha (objeto).
+- **Lectura pura** (`readOnlyHint`).
 
 ```json
 { "code": "C1234567", "limit": 10 }
@@ -17,15 +25,25 @@ Herramientas por código OSCE, con paginación (`limit`/`offset`) y filtros opci
 ## get_contract — "Consultar contrato"
 
 - **Descripción**: obtiene un contrato por código: fechas de suscripción, inicio y fin, prórrogas, adicionales y reducciones registradas por la entidad, más la cabecera de sus convocatorias y adjudicaciones. Entre la adjudicación y la suscripción puede transcurrir tiempo (recurso impugnativo, proveedor que no suscribe, etc.).
-- **Input**: `code` (string, código de contrato OSCE) + paginación + fecha.
+- **Input**: `code` (string, código de contrato OSCE) + paginación + fecha (opcional).
+- **Output**: ficha (objeto).
+- **Lectura pura** (`readOnlyHint`).
 
 ```json
 { "code": "C7654321" }
 ```
 
-## Complementarias
+## get_location — "Consultar ubicación"
 
-- `get_location` — "Consultar ubicación": devuelve departamento, provincia y distrito de un código ubigeo de seis dígitos (`{"ubigeo": "150101"}`). Útil para resolver el ubigeo que traen las fichas de empresa.
+- **Descripción**: devuelve departamento, provincia y distrito de un código ubigeo de seis dígitos.
+- **Input**: `ubigeo` (string, seis dígitos).
+- **Output**: ficha (objeto).
+- **Lectura pura** (`readOnlyHint`).
+- **Cuándo usarla**: para resolver el ubigeo que traen las fichas de empresa.
+
+```json
+{ "ubigeo": "150101" }
+```
 
 ## Cómo encadenar
 
